@@ -25,7 +25,33 @@ function loadState(): { user: User | null; complaints: Complaint[] } {
 }
 
 function persist(state: { user: User | null; complaints: Complaint[] }) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  // Avoid storing large image data URLs in localStorage which can easily exceed quota.
+  try {
+    const sanitized = {
+      user: state.user,
+      complaints: state.complaints.map(({ image, ...rest }) => rest),
+    };
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(sanitized));
+  } catch (err) {
+    // If we hit quota, try a smaller payload: keep only the most recent 20 complaints (without images).
+    try {
+      const small = {
+        user: state.user,
+        complaints: state.complaints.slice(0, 20).map(({ image, ...rest }) => rest),
+      };
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(small));
+    } catch (err2) {
+      // Final fallback: persist only user info to avoid breaking the app.
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify({ user: state.user, complaints: [] }));
+      } catch (err3) {
+        // Give up silently but log to console for debugging.
+        // Avoid throwing here so the app remains usable even if persistence fails.
+        // eslint-disable-next-line no-console
+        console.warn("Failed to persist app state to localStorage", err3);
+      }
+    }
+  }
 }
 
 export function AppProvider({ children }: { children: React.ReactNode }) {
