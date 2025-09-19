@@ -44,7 +44,7 @@ export default function MyPosts() {
               <div className="h-24 w-full md:w-40 bg-muted rounded grid place-items-center text-muted-foreground">No image</div>
             )}
             <div>
-              <h3 className="font-semibold">{c.title}</h3>
+              <h3 className="font-semibold"><Link to={`/report/${c.id}`} className="hover:underline">{c.title}</Link></h3>
               <p className="text-sm text-muted-foreground line-clamp-2">{c.description}</p>
               <div className="mt-2 flex flex-wrap gap-2">
                 <Badge variant="secondary">{c.wasteType}</Badge>
@@ -52,7 +52,13 @@ export default function MyPosts() {
                 <Badge>{c.status}</Badge>
               </div>
             </div>
-            <div className="text-sm text-muted-foreground md:text-right">{c.lat.toFixed(3)}, {c.lng.toFixed(3)}</div>
+            <div className="text-sm text-muted-foreground md:text-right flex flex-col items-end gap-2">
+              <div>{c.lat.toFixed(3)}, {c.lng.toFixed(3)}</div>
+              <div className="flex gap-2">
+                <Link to={`/report/${c.id}`}><button className="text-sm underline">View</button></Link>
+                <button className="text-sm text-destructive" onClick={() => { if (confirm('Delete this post?')) deleteComplaint(c.id); }}>Delete</button>
+              </div>
+            </div>
           </li>
         ))}
         {filtered.length === 0 && <p className="text-muted-foreground">No posts yet.</p>}
