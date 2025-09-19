@@ -118,8 +118,8 @@ export default function AddComplaint() {
                 <span className="text-sm text-muted-foreground self-center">or enter manually</span>
               </div>
               <div className="grid grid-cols-2 gap-2 w-full md:w-auto">
-                <Input placeholder="Latitude" value={loc?.lat ?? ""} onChange={(e) => setLoc((prev) => ({ lat: Number(e.target.value || 0), lng: prev?.lng ?? 0 }))} />
-                <Input placeholder="Longitude" value={loc?.lng ?? ""} onChange={(e) => setLoc((prev) => ({ lat: prev?.lat ?? 0, lng: Number(e.target.value || 0) }))} />
+                <Input placeholder="Latitude" value={latStr} onChange={(e) => setLatStr(e.target.value)} />
+                <Input placeholder="Longitude" value={lngStr} onChange={(e) => setLngStr(e.target.value)} />
               </div>
             </div>
           </div>
