@@ -148,7 +148,22 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     if (status === "collected") toast.success("Marked as Collected");
   };
 
-  const value = useMemo<AppState>(() => ({ user, register, login, logout, complaints, addComplaint, updateComplaintStatus, accounts }), [user, complaints, accounts]);
+  const deleteComplaint = (id: string) => {
+    setComplaints((prev) => prev.filter((c) => c.id !== id));
+    toast.success("Complaint deleted");
+  };
+
+  const updateAccount: AppState["updateAccount"] = (id, updates) => {
+    setAccounts((prev) => {
+      const next = prev.map((a) => (a.id === id ? { ...a, ...updates } : a));
+      return next;
+    });
+    // if current user updated, refresh user object
+    setUser((u) => (u && u.id === id ? { ...u, name: updates.name ?? u.name, email: updates.email ?? u.email } : u));
+    toast.success("Profile updated");
+  };
+
+  const value = useMemo<AppState>(() => ({ user, register, login, logout, complaints, addComplaint, updateComplaintStatus, deleteComplaint, updateAccount, accounts }), [user, complaints, accounts]);
 
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>;
 }
