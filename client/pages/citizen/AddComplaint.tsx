@@ -33,7 +33,7 @@ export default function AddComplaint() {
   const parseCoord = (val: string, fallback?: number) => {
     if (!val || val.trim() === "") return typeof fallback === 'number' ? fallback : NaN;
     // Allow comma or space as decimal separator
-    const normalized = val.trim().replace(/,/, '.');
+    const normalized = val.trim().replace(/,/g, '.');
     const n = Number(normalized);
     return isFinite(n) ? n : NaN;
   };
