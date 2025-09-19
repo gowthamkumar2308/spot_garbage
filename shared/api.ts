@@ -11,11 +11,12 @@ export interface DemoResponse {
   message: string;
 }
 
-export type Role = "citizen" | "worker" | "admin";
+export type Role = "user" | "worker";
 
 export interface User {
   id: string;
   name: string;
+  email?: string;
   role: Role;
 }
 
