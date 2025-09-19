@@ -103,9 +103,15 @@ export default function AddComplaint() {
           </div>
           <div className="grid gap-2">
             <Label>Location</Label>
-            <div className="flex gap-2">
-              <Button type="button" variant="secondary" onClick={getLocation}>Use my location</Button>
-              {loc && <span className="text-sm text-muted-foreground self-center">{loc.lat.toFixed(4)}, {loc.lng.toFixed(4)}</span>}
+            <div className="flex gap-2 flex-col md:flex-row">
+              <div className="flex gap-2">
+                <Button type="button" variant="secondary" onClick={getLocation}>Use my location</Button>
+                <span className="text-sm text-muted-foreground self-center">or enter manually</span>
+              </div>
+              <div className="grid grid-cols-2 gap-2 w-full md:w-auto">
+                <Input placeholder="Latitude" value={loc?.lat ?? ""} onChange={(e) => setLoc((prev) => ({ lat: Number(e.target.value || 0), lng: prev?.lng ?? 0 }))} />
+                <Input placeholder="Longitude" value={loc?.lng ?? ""} onChange={(e) => setLoc((prev) => ({ lat: prev?.lat ?? 0, lng: Number(e.target.value || 0) }))} />
+              </div>
             </div>
           </div>
         </div>
