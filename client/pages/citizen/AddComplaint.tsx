@@ -103,8 +103,9 @@ export default function AddComplaint() {
       <p className="text-muted-foreground mb-6">Upload a photo, tag waste type, and submit your location.</p>
       <div className="grid gap-6 rounded-2xl border p-6 bg-card shadow-sm">
         <div className="grid gap-2">
-          <Label htmlFor="title">Title</Label>
+          <Label htmlFor="title">Title <span className="text-destructive-foreground">*</span></Label>
           <Input id="title" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Short summary" />
+          {submitted && !title.trim() && <div className="text-sm text-destructive mt-1">Title is required</div>}
         </div>
         <div className="grid gap-2">
           <Label htmlFor="desc">Description</Label>
