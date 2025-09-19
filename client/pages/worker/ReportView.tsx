@@ -15,9 +15,11 @@ export default function ReportView() {
   const { complaints, updateComplaintStatus, deleteComplaint, user } = useApp();
   const c = complaints.find((x) => x.id === id);
 
-  const fallbackLat = 18.060621419165987;
-  const fallbackLng = 83.4052036256904;
-  const isFallback = c && Math.abs(c.lat - fallbackLat) < 0.000001 && Math.abs(c.lng - fallbackLng) < 0.000001;
+  const fallbackLat = 18.060534;
+  const fallbackLng = 83.405583;
+  const fallbackMapLink = "https://maps.app.goo.gl/pEVeM5ZmJmrYXcB68";
+  const fallbackAddress = "Chintalavalasa, Andhra Pradesh 535005";
+  const isFallback = c && Math.abs(c.lat - fallbackLat) < 0.0001 && Math.abs(c.lng - fallbackLng) < 0.0001;
 
   if (!c) {
     return (
