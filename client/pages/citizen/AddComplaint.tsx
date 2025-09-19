@@ -149,6 +149,7 @@ export default function AddComplaint() {
                 <Input placeholder="Longitude" value={lngStr} onChange={(e) => setLngStr(e.target.value)} />
               </div>
             </div>
+            {submitted && (!isFinite(Number(latStr)) || !isFinite(Number(lngStr))) && <div className="text-sm text-destructive mt-1">Valid latitude and longitude are required</div>}
           </div>
         </div>
         <div className="grid gap-2">
