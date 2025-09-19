@@ -21,6 +21,7 @@ export default function AddComplaint() {
   const [latStr, setLatStr] = useState<string>("");
   const [lngStr, setLngStr] = useState<string>("");
   const [loading, setLoading] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
   const navigate = useNavigate();
 
   const onFile = (f: File) => {
@@ -62,9 +63,18 @@ export default function AddComplaint() {
   };
 
   const submit = async () => {
+    setSubmitted(true);
     if (!user) return;
     const lat = Number(latStr || (loc?.lat ?? NaN));
     const lng = Number(lngStr || (loc?.lng ?? NaN));
+    if (!title.trim()) {
+      toast.error("Title is required");
+      return;
+    }
+    if (!image) {
+      toast.error("Photo is required");
+      return;
+    }
     if (!isFinite(lat) || !isFinite(lng)) {
       toast.error("Please add a valid location");
       return;
