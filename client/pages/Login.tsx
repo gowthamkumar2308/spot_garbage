@@ -42,7 +42,7 @@ export default function Login() {
       <div className="mt-6 text-sm text-muted-foreground">
         <div className="font-medium">Demo accounts</div>
         <div>User: user@example.com / password</div>
-        <div>Worker: worker@example.com / password</div>
+        <div>Admin: worker@example.com / password</div>
       </div>
     </div>
   );
