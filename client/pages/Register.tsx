@@ -47,7 +47,7 @@ export default function Register() {
               <RadioGroupItem value="user" /> User
             </label>
             <label className="flex items-center gap-2 rounded-md border p-3 cursor-pointer">
-              <RadioGroupItem value="worker" /> Worker (Admin)
+              <RadioGroupItem value="worker" /> Admin
             </label>
           </RadioGroup>
         </div>
