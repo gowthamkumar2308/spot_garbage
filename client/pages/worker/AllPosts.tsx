@@ -16,13 +16,13 @@ export default function WorkerAllPosts() {
         {complaints.map((c) => (
           <li key={c.id} className="rounded-2xl border p-4 grid gap-3 md:grid-cols-[1fr_auto] items-center bg-card shadow-sm">
             <div>
-              <h3 className="font-semibold">{c.title} <span className="text-xs text-muted-foreground">({c.lat.toFixed(3)}, {c.lng.toFixed(3)})</span></h3>
+              <h3 className="font-semibold"><a href={`/worker/report/${c.id}`} className="hover:underline">{c.title}</a> <span className="text-xs text-muted-foreground">({c.lat.toFixed(3)}, {c.lng.toFixed(3)})</span></h3>
               <p className="text-sm text-muted-foreground line-clamp-2">{c.description}</p>
-              <div className="mt-2 flex flex-wrap gap-2">
+              <div className="mt-2 flex flex-wrap gap-2 items-center">
                 <Badge variant="secondary">{c.wasteType}</Badge>
                 <Badge variant={c.toxicity === 'high' ? 'destructive' : 'secondary'}>{c.toxicity}</Badge>
                 <Badge>{c.status}</Badge>
-                <a className="text-sm underline" href={`https://maps.google.com/?q=${c.lat},${c.lng}`} target="_blank" rel="noreferrer">Open in Maps</a>
+                <a className="text-sm underline ml-2" href={`https://maps.google.com/?q=${c.lat},${c.lng}`} target="_blank" rel="noreferrer">Open in Maps</a>
               </div>
             </div>
             {c.status !== 'collected' && (
