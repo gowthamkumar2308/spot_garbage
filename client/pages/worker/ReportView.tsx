@@ -12,8 +12,12 @@ function MapEmbed({ lat, lng }: { lat: number; lng: number }) {
 export default function ReportView() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { complaints, updateComplaintStatus } = useApp();
+  const { complaints, updateComplaintStatus, deleteComplaint, user } = useApp();
   const c = complaints.find((x) => x.id === id);
+
+  const fallbackLat = 17 + 45 / 60 + 1.5 / 3600; // ~17.7504167
+  const fallbackLng = 83 + 15 / 60 + 1.4 / 3600; // ~83.2503889
+  const isFallback = c && Math.abs(c.lat - fallbackLat) < 0.0001 && Math.abs(c.lng - fallbackLng) < 0.0001;
 
   if (!c) {
     return (
@@ -43,6 +47,9 @@ export default function ReportView() {
               <Button onClick={() => updateComplaintStatus(c.id, 'collected')}>Collected</Button>
             </>
           )}
+          {user?.name === c.reporterName && (
+            <Button className="bg-red-600 text-white" onClick={() => { if (confirm('Delete this report?')) { deleteComplaint(c.id); navigate('/my-posts'); } }}>Delete</Button>
+          )}
         </div>
       </div>
 
@@ -62,6 +69,12 @@ export default function ReportView() {
             <div className="text-sm text-muted-foreground mb-2">Location</div>
             <div className="mb-3">{c.lat.toFixed(6)}, {c.lng.toFixed(6)}</div>
             <MapEmbed lat={c.lat} lng={c.lng} />
+            <div className="mt-3 flex gap-2">
+              <a className="text-sm underline" href={`https://maps.google.com/?q=${c.lat},${c.lng}`} target="_blank" rel="noreferrer">Open in Google Maps</a>
+              {isFallback && (
+                <a className="text-sm underline" href="https://maps.app.goo.gl/GQrKMj4eUkBh1ggF7" target="_blank" rel="noreferrer">Open default location</a>
+              )}
+            </div>
           </div>
         </div>
 
