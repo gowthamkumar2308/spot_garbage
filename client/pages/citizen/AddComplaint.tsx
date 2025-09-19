@@ -159,7 +159,7 @@ export default function AddComplaint() {
           {image && <img src={image} alt="preview" className="mt-2 h-48 w-full object-cover rounded-md border" />}
         </div>
         <div className="flex justify-end">
-          <Button disabled={loading || !title || !description || !loc} onClick={submit}>{loading ? "Submitting..." : "Submit"}</Button>
+          <Button disabled={loading || !title.trim() || !image || !isFinite(Number(latStr || (loc?.lat ?? NaN))) || !isFinite(Number(lngStr || (loc?.lng ?? NaN)))} onClick={submit}>{loading ? "Submitting..." : "Submit"}</Button>
         </div>
       </div>
     </div>
