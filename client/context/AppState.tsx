@@ -40,18 +40,28 @@ function loadState(): { user: User | null; complaints: Complaint[] } {
 }
 
 function persist(state: { user: User | null; complaints: Complaint[] }) {
-  // Avoid storing large image data URLs in localStorage which can easily exceed quota.
+  // Persist complaints but keep small image data URLs if present to allow previews.
+  // Avoid storing huge images that can exceed quota.
   try {
     const sanitized = {
       user: state.user,
-      complaints: state.complaints.map(({ image, ...rest }) => rest),
+      complaints: state.complaints.map((c) => {
+        // If image is a small data URL, keep it; otherwise drop it to save space.
+        const image = typeof c.image === "string" && c.image.length < 200_000 ? c.image : undefined;
+        const { image: _img, ...rest } = { ...c, image };
+        return rest;
+      }),
     };
     localStorage.setItem(STORAGE_KEY, JSON.stringify(sanitized));
   } catch (err) {
     try {
       const small = {
         user: state.user,
-        complaints: state.complaints.slice(0, 20).map(({ image, ...rest }) => rest),
+        complaints: state.complaints.slice(0, 20).map((c) => {
+          const image = typeof c.image === "string" && c.image.length < 200_000 ? c.image : undefined;
+          const { image: _img, ...rest } = { ...c, image };
+          return rest;
+        }),
       };
       localStorage.setItem(STORAGE_KEY, JSON.stringify(small));
     } catch (err2) {
