@@ -24,7 +24,7 @@ export default function Header() {
         </Link>
         <nav className="hidden md:flex items-center gap-1">
           <NavLink to="/">Home</NavLink>
-          {user?.role !== "worker" && (
+          {user?.role === "user" && (
             <>
               <NavLink to="/report"><span className="inline-flex items-center gap-1"><PlusCircle className="h-4 w-4" /> Report</span></NavLink>
               <NavLink to="/my-posts"><span className="inline-flex items-center gap-1"><ScrollText className="h-4 w-4" /> My Posts</span></NavLink>
@@ -34,7 +34,6 @@ export default function Header() {
           {user?.role === "worker" && (
             <>
               <NavLink to="/worker/all-posts">All Posts</NavLink>
-              <NavLink to="/admin/map"><span className="inline-flex items-center gap-1"><MapPin className="h-4 w-4" /> Map</span></NavLink>
             </>
           )}
         </nav>
