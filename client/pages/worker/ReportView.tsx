@@ -15,9 +15,9 @@ export default function ReportView() {
   const { complaints, updateComplaintStatus, deleteComplaint, user } = useApp();
   const c = complaints.find((x) => x.id === id);
 
-  const fallbackLat = 17 + 45 / 60 + 1.5 / 3600; // ~17.7504167
-  const fallbackLng = 83 + 15 / 60 + 1.4 / 3600; // ~83.2503889
-  const isFallback = c && Math.abs(c.lat - fallbackLat) < 0.0001 && Math.abs(c.lng - fallbackLng) < 0.0001;
+  const fallbackLat = 18.060621419165987;
+  const fallbackLng = 83.4052036256904;
+  const isFallback = c && Math.abs(c.lat - fallbackLat) < 0.000001 && Math.abs(c.lng - fallbackLng) < 0.000001;
 
   if (!c) {
     return (
@@ -41,7 +41,8 @@ export default function ReportView() {
         </div>
         <div className="flex gap-2">
           <Button variant="secondary" onClick={() => navigate(-1)}>Back</Button>
-          {c.status !== 'collected' && (
+          {/* Only workers/admins can change status */}
+          {user?.role === 'worker' && c.status !== 'collected' && (
             <>
               <Button variant="secondary" onClick={() => updateComplaintStatus(c.id, 'in_progress')}>In Progress</Button>
               <Button onClick={() => updateComplaintStatus(c.id, 'collected')}>Collected</Button>
@@ -72,7 +73,7 @@ export default function ReportView() {
             <div className="mt-3 flex gap-2">
               <a className="text-sm underline" href={`https://maps.google.com/?q=${c.lat},${c.lng}`} target="_blank" rel="noreferrer">Open in Google Maps</a>
               {isFallback && (
-                <a className="text-sm underline" href="https://maps.app.goo.gl/GQrKMj4eUkBh1ggF7" target="_blank" rel="noreferrer">Open default location</a>
+                <a className="text-sm underline" href={`https://maps.google.com/?q=${fallbackLat},${fallbackLng}`} target="_blank" rel="noreferrer">Open default location</a>
               )}
             </div>
           </div>
