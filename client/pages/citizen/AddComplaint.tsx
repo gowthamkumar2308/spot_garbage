@@ -30,10 +30,19 @@ export default function AddComplaint() {
   };
 
   const getLocation = () => {
+    // Fallback coordinates (DMS: 17°45'01.5"N 83°15'01.4"E)
+    const fallbackLat = 17 + 45 / 60 + 1.5 / 3600; // ~17.7504167
+    const fallbackLng = 83 + 15 / 60 + 1.4 / 3600; // ~83.2503889
+
     if (!navigator.geolocation) {
-      toast.error("Geolocation not supported");
+      toast.info("Geolocation not supported — using default location");
+      const coords = { lat: fallbackLat, lng: fallbackLng };
+      setLoc(coords);
+      setLatStr(String(coords.lat));
+      setLngStr(String(coords.lng));
       return;
     }
+
     navigator.geolocation.getCurrentPosition(
       (pos) => {
         const coords = { lat: pos.coords.latitude, lng: pos.coords.longitude };
@@ -41,7 +50,14 @@ export default function AddComplaint() {
         setLatStr(String(coords.lat));
         setLngStr(String(coords.lng));
       },
-      () => toast.error("Unable to fetch location")
+      (err) => {
+        // On permission denied or other errors, default to provided coordinates
+        toast.info("Using default location — grant location permission for live coordinates");
+        const coords = { lat: fallbackLat, lng: fallbackLng };
+        setLoc(coords);
+        setLatStr(String(coords.lat));
+        setLngStr(String(coords.lng));
+      },
     );
   };
 
