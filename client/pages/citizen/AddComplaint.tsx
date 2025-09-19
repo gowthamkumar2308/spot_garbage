@@ -160,7 +160,7 @@ export default function AddComplaint() {
                 <Input placeholder="Longitude" value={lngStr} onChange={(e) => setLngStr(e.target.value)} />
               </div>
             </div>
-            {submitted && (!isFinite(Number(latStr)) || !isFinite(Number(lngStr))) && <div className="text-sm text-destructive mt-1">Valid latitude and longitude are required</div>}
+            {submitted && (!isFinite(parseCoord(latStr, loc?.lat)) || !isFinite(parseCoord(lngStr, loc?.lng))) && <div className="text-sm text-destructive mt-1">Valid latitude and longitude are required</div>}
           </div>
         </div>
         <div className="grid gap-2">
@@ -170,7 +170,7 @@ export default function AddComplaint() {
           {image && <img src={image} alt="preview" className="mt-2 h-48 w-full object-cover rounded-md border" />}
         </div>
         <div className="flex justify-end">
-          <Button disabled={loading || !title.trim() || !image || !isFinite(Number(latStr || (loc?.lat ?? NaN))) || !isFinite(Number(lngStr || (loc?.lng ?? NaN)))} onClick={submit}>{loading ? "Submitting..." : "Submit"}</Button>
+          <Button disabled={loading || !title.trim() || !image || !isFinite(parseCoord(latStr, loc?.lat)) || !isFinite(parseCoord(lngStr, loc?.lng))} onClick={submit}>{loading ? "Submitting..." : "Submit"}</Button>
         </div>
       </div>
     </div>
