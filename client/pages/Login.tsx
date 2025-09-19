@@ -21,20 +21,40 @@ export default function Login() {
   return (
     <div className="container max-w-2xl py-12">
       <h1 className="text-3xl font-bold mb-2">Sign in</h1>
-      <p className="text-muted-foreground mb-6">Login with your email and password.</p>
+      <p className="text-muted-foreground mb-6">
+        Login with your email and password.
+      </p>
       <div className="grid gap-6 rounded-lg border p-6">
         <div className="grid gap-2">
           <Label htmlFor="email">Email</Label>
-          <Input id="email" placeholder="you@example.com" value={email} onChange={(e) => setEmail(e.target.value)} />
+          <Input
+            id="email"
+            placeholder="you@example.com"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
         </div>
         <div className="grid gap-2">
           <Label htmlFor="password">Password</Label>
-          <Input id="password" type="password" placeholder="••••••••" value={password} onChange={(e) => setPassword(e.target.value)} />
+          <Input
+            id="password"
+            type="password"
+            placeholder="••••••••"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
         </div>
         <div className="flex items-center justify-between">
-          <div className="text-sm text-muted-foreground">No account? <Link to="/register" className="underline">Register</Link></div>
+          <div className="text-sm text-muted-foreground">
+            No account?{" "}
+            <Link to="/register" className="underline">
+              Register
+            </Link>
+          </div>
           <div className="flex gap-2">
-            <Button onClick={submit} disabled={!email || !password}>Sign in</Button>
+            <Button onClick={submit} disabled={!email || !password}>
+              Sign in
+            </Button>
           </div>
         </div>
       </div>

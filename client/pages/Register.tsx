@@ -25,24 +25,46 @@ export default function Register() {
   return (
     <div className="container max-w-2xl py-12">
       <h1 className="text-3xl font-bold mb-2">Register</h1>
-      <p className="text-muted-foreground mb-6">Create an account as a Citizen or Worker.</p>
+      <p className="text-muted-foreground mb-6">
+        Create an account as a Citizen or Worker.
+      </p>
 
       <div className="grid gap-6 rounded-lg border p-6">
         <div className="grid gap-2">
           <Label htmlFor="name">Full name (optional)</Label>
-          <Input id="name" placeholder="Your full name" value={name} onChange={(e) => setName(e.target.value)} />
+          <Input
+            id="name"
+            placeholder="Your full name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
         </div>
         <div className="grid gap-2">
           <Label htmlFor="email">Email</Label>
-          <Input id="email" placeholder="you@example.com" value={email} onChange={(e) => setEmail(e.target.value)} />
+          <Input
+            id="email"
+            placeholder="you@example.com"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
         </div>
         <div className="grid gap-2">
           <Label htmlFor="password">Password</Label>
-          <Input id="password" type="password" placeholder="••••••••" value={password} onChange={(e) => setPassword(e.target.value)} />
+          <Input
+            id="password"
+            type="password"
+            placeholder="••••••••"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
         </div>
         <div className="grid gap-3">
           <Label>Role</Label>
-          <RadioGroup className="grid grid-cols-2 gap-3" value={role} onValueChange={(v) => setRole(v as any)}>
+          <RadioGroup
+            className="grid grid-cols-2 gap-3"
+            value={role}
+            onValueChange={(v) => setRole(v as any)}
+          >
             <label className="flex items-center gap-2 rounded-md border p-3 cursor-pointer">
               <RadioGroupItem value="user" /> User
             </label>
@@ -52,7 +74,9 @@ export default function Register() {
           </RadioGroup>
         </div>
         <div className="flex justify-end">
-          <Button disabled={!email || !password} onClick={submit}>Create account</Button>
+          <Button disabled={!email || !password} onClick={submit}>
+            Create account
+          </Button>
         </div>
       </div>
 

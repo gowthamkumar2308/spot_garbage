@@ -20,9 +20,20 @@ export interface User {
   role: Role;
 }
 
-export type WasteType = "organic" | "plastic" | "e-waste" | "metal" | "glass" | "mixed";
+export type WasteType =
+  | "organic"
+  | "plastic"
+  | "e-waste"
+  | "metal"
+  | "glass"
+  | "mixed";
 export type Toxicity = "low" | "medium" | "high";
-export type Status = "submitted" | "verified" | "in_progress" | "collected" | "rejected";
+export type Status =
+  | "submitted"
+  | "verified"
+  | "in_progress"
+  | "collected"
+  | "rejected";
 
 export interface Complaint {
   id: string;
@@ -43,7 +54,8 @@ export function seedComplaints(): Complaint[] {
   const base: Omit<Complaint, "id" | "createdAt" | "status">[] = [
     {
       title: "Overflowing bins near market",
-      description: "Piled plastic bags and food waste attracting stray animals.",
+      description:
+        "Piled plastic bags and food waste attracting stray animals.",
       lat: 13.0827,
       lng: 80.2707,
       wasteType: "mixed",
@@ -62,5 +74,10 @@ export function seedComplaints(): Complaint[] {
       reporterName: "Rahul",
     },
   ];
-  return base.map((c) => ({ ...c, id: crypto.randomUUID(), createdAt: Date.now() - Math.floor(Math.random() * 1e7), status: c.verified ? "verified" : "submitted" }));
+  return base.map((c) => ({
+    ...c,
+    id: crypto.randomUUID(),
+    createdAt: Date.now() - Math.floor(Math.random() * 1e7),
+    status: c.verified ? "verified" : "submitted",
+  }));
 }

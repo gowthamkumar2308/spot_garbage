@@ -22,7 +22,13 @@ import Footer from "./components/Footer";
 
 const queryClient = new QueryClient();
 
-function ProtectedRoute({ children, roles }: { children: React.ReactNode; roles?: ("user" | "worker")[] }) {
+function ProtectedRoute({
+  children,
+  roles,
+}: {
+  children: React.ReactNode;
+  roles?: ("user" | "worker")[];
+}) {
   const { user } = useApp();
   if (!user) return <Navigate to="/login" replace />;
   if (roles && !roles.includes(user.role)) return <Navigate to="/" replace />;
@@ -101,7 +107,7 @@ const Root = () => (
               <Route
                 path="/report/:id"
                 element={
-                  <ProtectedRoute roles={["user","worker"]}>
+                  <ProtectedRoute roles={["user", "worker"]}>
                     <ReportView />
                   </ProtectedRoute>
                 }

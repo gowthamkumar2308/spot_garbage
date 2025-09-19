@@ -13,13 +13,20 @@ export default function Profile() {
   const [dob, setDob] = useState("");
 
   const save = () => {
-    updateAccount(user.id, { name: name.trim() || undefined, email: email.trim() || undefined, phone: phone || undefined, dob: dob || undefined });
+    updateAccount(user.id, {
+      name: name.trim() || undefined,
+      email: email.trim() || undefined,
+      phone: phone || undefined,
+      dob: dob || undefined,
+    });
   };
 
   return (
     <div className="container max-w-2xl py-8">
       <h1 className="text-3xl font-bold mb-1">Profile</h1>
-      <p className="text-muted-foreground mb-6">Update your account details. Role cannot be changed.</p>
+      <p className="text-muted-foreground mb-6">
+        Update your account details. Role cannot be changed.
+      </p>
       <div className="rounded-2xl border bg-card p-6 grid gap-4">
         <div className="grid gap-2">
           <Label>Name</Label>
@@ -35,10 +42,19 @@ export default function Profile() {
         </div>
         <div className="grid gap-2">
           <Label>Date of birth (optional)</Label>
-          <Input type="date" value={dob} onChange={(e) => setDob(e.target.value)} />
+          <Input
+            type="date"
+            value={dob}
+            onChange={(e) => setDob(e.target.value)}
+          />
         </div>
         <div className="grid grid-cols-2 gap-2 items-center">
-          <div className="text-sm text-muted-foreground">Role: <span className="capitalize">{user.role === 'worker' ? 'Admin' : 'User'}</span></div>
+          <div className="text-sm text-muted-foreground">
+            Role:{" "}
+            <span className="capitalize">
+              {user.role === "worker" ? "Admin" : "User"}
+            </span>
+          </div>
           <div className="text-right">
             <Button onClick={save}>Save</Button>
           </div>

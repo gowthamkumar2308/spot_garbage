@@ -15,14 +15,24 @@ interface Account {
 
 interface AppState {
   user: User | null;
-  register: (email: string, password: string, role: Role, name?: string) => Account | null;
+  register: (
+    email: string,
+    password: string,
+    role: Role,
+    name?: string,
+  ) => Account | null;
   login: (email: string, password: string) => Account | null;
   logout: () => void;
   complaints: Complaint[];
-  addComplaint: (c: Omit<Complaint, "id" | "status" | "createdAt">) => Complaint;
+  addComplaint: (
+    c: Omit<Complaint, "id" | "status" | "createdAt">,
+  ) => Complaint;
   updateComplaintStatus: (id: string, status: Complaint["status"]) => void;
   deleteComplaint: (id: string) => void;
-  updateAccount: (id: string, updates: Partial<Pick<Account, "name" | "email" | "phone" | "dob">>) => void;
+  updateAccount: (
+    id: string,
+    updates: Partial<Pick<Account, "name" | "email" | "phone" | "dob">>,
+  ) => void;
   accounts: Account[];
 }
 
@@ -47,7 +57,10 @@ function persist(state: { user: User | null; complaints: Complaint[] }) {
       user: state.user,
       complaints: state.complaints.map((c) => {
         // If image is a small data URL, keep it; otherwise drop it to save space.
-        const image = typeof c.image === "string" && c.image.length < 200_000 ? c.image : undefined;
+        const image =
+          typeof c.image === "string" && c.image.length < 200_000
+            ? c.image
+            : undefined;
         const { image: _img, ...rest } = { ...c, image };
         return rest;
       }),
@@ -58,7 +71,10 @@ function persist(state: { user: User | null; complaints: Complaint[] }) {
       const small = {
         user: state.user,
         complaints: state.complaints.slice(0, 20).map((c) => {
-          const image = typeof c.image === "string" && c.image.length < 200_000 ? c.image : undefined;
+          const image =
+            typeof c.image === "string" && c.image.length < 200_000
+              ? c.image
+              : undefined;
           const { image: _img, ...rest } = { ...c, image };
           return rest;
         }),
@@ -66,7 +82,10 @@ function persist(state: { user: User | null; complaints: Complaint[] }) {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(small));
     } catch (err2) {
       try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify({ user: state.user, complaints: [] }));
+        localStorage.setItem(
+          STORAGE_KEY,
+          JSON.stringify({ user: state.user, complaints: [] }),
+        );
       } catch (err3) {
         console.warn("Failed to persist app state to localStorage", err3);
       }
@@ -81,8 +100,20 @@ function loadAccounts(): Account[] {
   } catch {}
   // Seed demo accounts
   const demo: Account[] = [
-    { id: crypto.randomUUID(), email: "user@example.com", password: "password", role: "user", name: "Demo User" },
-    { id: crypto.randomUUID(), email: "worker@example.com", password: "password", role: "worker", name: "Demo Worker" },
+    {
+      id: crypto.randomUUID(),
+      email: "user@example.com",
+      password: "password",
+      role: "user",
+      name: "Demo User",
+    },
+    {
+      id: crypto.randomUUID(),
+      email: "worker@example.com",
+      password: "password",
+      role: "worker",
+      name: "Demo Worker",
+    },
   ];
   localStorage.setItem(ACCOUNTS_KEY, JSON.stringify(demo));
   return demo;
@@ -116,21 +147,39 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     persistAccounts(accounts);
   }, [accounts]);
 
-  const register = (email: string, password: string, role: Role, name?: string) => {
+  const register = (
+    email: string,
+    password: string,
+    role: Role,
+    name?: string,
+  ) => {
     if (accounts.find((a) => a.email === email)) return null;
-    const acc: Account = { id: crypto.randomUUID(), email, password, role, name };
+    const acc: Account = {
+      id: crypto.randomUUID(),
+      email,
+      password,
+      role,
+      name,
+    };
     setAccounts((s) => [acc, ...s]);
     toast.success("Registered successfully");
     return acc;
   };
 
   const login = (email: string, password: string) => {
-    const acc = accounts.find((a) => a.email === email && a.password === password) || null;
+    const acc =
+      accounts.find((a) => a.email === email && a.password === password) ||
+      null;
     if (!acc) {
       toast.error("Invalid credentials");
       return null;
     }
-    const u: User = { id: acc.id, name: acc.name || acc.email.split("@")[0], email: acc.email, role: acc.role };
+    const u: User = {
+      id: acc.id,
+      name: acc.name || acc.email.split("@")[0],
+      email: acc.email,
+      role: acc.role,
+    };
     setUser(u);
     toast.success(`Welcome, ${u.name}`);
     return acc;
@@ -153,8 +202,13 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     return item;
   };
 
-  const updateComplaintStatus: AppState["updateComplaintStatus"] = (id, status) => {
-    setComplaints((prev) => prev.map((c) => (c.id === id ? { ...c, status } : c)));
+  const updateComplaintStatus: AppState["updateComplaintStatus"] = (
+    id,
+    status,
+  ) => {
+    setComplaints((prev) =>
+      prev.map((c) => (c.id === id ? { ...c, status } : c)),
+    );
     if (status === "collected") toast.success("Marked as Collected");
   };
 
@@ -169,11 +223,33 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       return next;
     });
     // if current user updated, refresh user object
-    setUser((u) => (u && u.id === id ? { ...u, name: updates.name ?? u.name, email: updates.email ?? u.email } : u));
+    setUser((u) =>
+      u && u.id === id
+        ? {
+            ...u,
+            name: updates.name ?? u.name,
+            email: updates.email ?? u.email,
+          }
+        : u,
+    );
     toast.success("Profile updated");
   };
 
-  const value = useMemo<AppState>(() => ({ user, register, login, logout, complaints, addComplaint, updateComplaintStatus, deleteComplaint, updateAccount, accounts }), [user, complaints, accounts]);
+  const value = useMemo<AppState>(
+    () => ({
+      user,
+      register,
+      login,
+      logout,
+      complaints,
+      addComplaint,
+      updateComplaintStatus,
+      deleteComplaint,
+      updateAccount,
+      accounts,
+    }),
+    [user, complaints, accounts],
+  );
 
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>;
 }

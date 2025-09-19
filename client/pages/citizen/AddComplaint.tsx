@@ -2,7 +2,13 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { useApp } from "@/context/AppState";
 import { useState, useEffect } from "react";
 import { verifyImageContainsGarbage } from "@/services/ml";
@@ -31,9 +37,10 @@ export default function AddComplaint() {
   };
 
   const parseCoord = (val: string, fallback?: number) => {
-    if (!val || val.trim() === "") return typeof fallback === 'number' ? fallback : NaN;
+    if (!val || val.trim() === "")
+      return typeof fallback === "number" ? fallback : NaN;
     // Allow comma or space as decimal separator
-    const normalized = val.trim().replace(/,/g, '.');
+    const normalized = val.trim().replace(/,/g, ".");
     const n = Number(normalized);
     return isFinite(n) ? n : NaN;
   };
@@ -61,7 +68,9 @@ export default function AddComplaint() {
       },
       (err) => {
         // On permission denied or other errors, default to provided coordinates
-        toast.info("Using default location — grant location permission for live coordinates");
+        toast.info(
+          "Using default location — grant location permission for live coordinates",
+        );
         const coords = { lat: fallbackLat, lng: fallbackLng };
         setLoc(coords);
         setLatStr(String(coords.lat));
@@ -71,7 +80,9 @@ export default function AddComplaint() {
   };
 
   // Attempt to prefill with live location on mount; falls back to default if unavailable
-  useEffect(() => { getLocation(); }, []);
+  useEffect(() => {
+    getLocation();
+  }, []);
 
   const submit = async () => {
     setSubmitted(true);
@@ -91,7 +102,12 @@ export default function AddComplaint() {
       return;
     }
     setLoading(true);
-    const ml = await verifyImageContainsGarbage({ title, description, image, wasteType });
+    const ml = await verifyImageContainsGarbage({
+      title,
+      description,
+      image,
+      wasteType,
+    });
     const c = addComplaint({
       title,
       description,
@@ -104,29 +120,56 @@ export default function AddComplaint() {
       reporterName: user.name,
     });
     setLoading(false);
-    toast.info(ml.verified ? `Verified (${Math.round(ml.confidence)}%)` : "Pending manual review");
+    toast.info(
+      ml.verified
+        ? `Verified (${Math.round(ml.confidence)}%)`
+        : "Pending manual review",
+    );
     navigate("/track");
   };
 
   return (
     <div className="container max-w-3xl py-8">
       <h1 className="text-3xl font-bold mb-1">Report Garbage</h1>
-      <p className="text-muted-foreground mb-6">Upload a photo, tag waste type, and submit your location.</p>
+      <p className="text-muted-foreground mb-6">
+        Upload a photo, tag waste type, and submit your location.
+      </p>
       <div className="grid gap-6 rounded-2xl border p-6 bg-card shadow-sm">
         <div className="grid gap-2">
-          <Label htmlFor="title">Title <span className="text-destructive-foreground">*</span></Label>
-          <Input id="title" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Short summary" />
-          {submitted && !title.trim() && <div className="text-sm text-destructive mt-1">Title is required</div>}
+          <Label htmlFor="title">
+            Title <span className="text-destructive-foreground">*</span>
+          </Label>
+          <Input
+            id="title"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            placeholder="Short summary"
+          />
+          {submitted && !title.trim() && (
+            <div className="text-sm text-destructive mt-1">
+              Title is required
+            </div>
+          )}
         </div>
         <div className="grid gap-2">
           <Label htmlFor="desc">Description</Label>
-          <Textarea id="desc" value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Add details that help admins locate and assess the site" />
+          <Textarea
+            id="desc"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            placeholder="Add details that help admins locate and assess the site"
+          />
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="grid gap-2">
             <Label>Waste type</Label>
-            <Select value={wasteType} onValueChange={(v) => setWasteType(v as WasteType)}>
-              <SelectTrigger><SelectValue placeholder="Select type" /></SelectTrigger>
+            <Select
+              value={wasteType}
+              onValueChange={(v) => setWasteType(v as WasteType)}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Select type" />
+              </SelectTrigger>
               <SelectContent>
                 <SelectItem value="organic">Organic</SelectItem>
                 <SelectItem value="plastic">Plastic</SelectItem>
@@ -139,8 +182,13 @@ export default function AddComplaint() {
           </div>
           <div className="grid gap-2">
             <Label>Toxicity</Label>
-            <Select value={toxicity} onValueChange={(v) => setToxicity(v as Toxicity)}>
-              <SelectTrigger><SelectValue placeholder="Select" /></SelectTrigger>
+            <Select
+              value={toxicity}
+              onValueChange={(v) => setToxicity(v as Toxicity)}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Select" />
+              </SelectTrigger>
               <SelectContent>
                 <SelectItem value="low">Low</SelectItem>
                 <SelectItem value="medium">Medium</SelectItem>
@@ -152,25 +200,70 @@ export default function AddComplaint() {
             <Label>Location</Label>
             <div className="flex gap-2 flex-col md:flex-row">
               <div className="flex gap-2">
-                <Button type="button" variant="secondary" onClick={getLocation}>Use my location</Button>
-                <span className="text-sm text-muted-foreground self-center">or enter manually</span>
+                <Button type="button" variant="secondary" onClick={getLocation}>
+                  Use my location
+                </Button>
+                <span className="text-sm text-muted-foreground self-center">
+                  or enter manually
+                </span>
               </div>
               <div className="grid grid-cols-2 gap-2 w-full md:w-auto">
-                <Input placeholder="Latitude" value={latStr} onChange={(e) => setLatStr(e.target.value)} />
-                <Input placeholder="Longitude" value={lngStr} onChange={(e) => setLngStr(e.target.value)} />
+                <Input
+                  placeholder="Latitude"
+                  value={latStr}
+                  onChange={(e) => setLatStr(e.target.value)}
+                />
+                <Input
+                  placeholder="Longitude"
+                  value={lngStr}
+                  onChange={(e) => setLngStr(e.target.value)}
+                />
               </div>
             </div>
-            {submitted && (!isFinite(parseCoord(latStr, loc?.lat)) || !isFinite(parseCoord(lngStr, loc?.lng))) && <div className="text-sm text-destructive mt-1">Valid latitude and longitude are required</div>}
+            {submitted &&
+              (!isFinite(parseCoord(latStr, loc?.lat)) ||
+                !isFinite(parseCoord(lngStr, loc?.lng))) && (
+                <div className="text-sm text-destructive mt-1">
+                  Valid latitude and longitude are required
+                </div>
+              )}
           </div>
         </div>
         <div className="grid gap-2">
-          <Label>Photo <span className="text-destructive-foreground">*</span></Label>
-          <Input type="file" accept="image/*" onChange={(e) => e.target.files && onFile(e.target.files[0])} />
-          {submitted && !image && <div className="text-sm text-destructive mt-1">Photo is required</div>}
-          {image && <img src={image} alt="preview" className="mt-2 h-48 w-full object-cover rounded-md border" />}
+          <Label>
+            Photo <span className="text-destructive-foreground">*</span>
+          </Label>
+          <Input
+            type="file"
+            accept="image/*"
+            onChange={(e) => e.target.files && onFile(e.target.files[0])}
+          />
+          {submitted && !image && (
+            <div className="text-sm text-destructive mt-1">
+              Photo is required
+            </div>
+          )}
+          {image && (
+            <img
+              src={image}
+              alt="preview"
+              className="mt-2 h-48 w-full object-cover rounded-md border"
+            />
+          )}
         </div>
         <div className="flex justify-end">
-          <Button disabled={loading || !title.trim() || !image || !isFinite(parseCoord(latStr, loc?.lat)) || !isFinite(parseCoord(lngStr, loc?.lng))} onClick={submit}>{loading ? "Submitting..." : "Submit"}</Button>
+          <Button
+            disabled={
+              loading ||
+              !title.trim() ||
+              !image ||
+              !isFinite(parseCoord(latStr, loc?.lat)) ||
+              !isFinite(parseCoord(lngStr, loc?.lng))
+            }
+            onClick={submit}
+          >
+            {loading ? "Submitting..." : "Submit"}
+          </Button>
         </div>
       </div>
     </div>

@@ -2,13 +2,36 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useApp } from "@/context/AppState";
 import { cn } from "@/lib/utils";
-import { MapPin, PlusCircle, Recycle, ScrollText, User2, ListChecks } from "lucide-react";
+import {
+  MapPin,
+  PlusCircle,
+  Recycle,
+  ScrollText,
+  User2,
+  ListChecks,
+} from "lucide-react";
 
-const NavLink = ({ to, children }: { to: string; children: React.ReactNode }) => {
+const NavLink = ({
+  to,
+  children,
+}: {
+  to: string;
+  children: React.ReactNode;
+}) => {
   const { pathname } = useLocation();
   const active = pathname === to;
   return (
-    <Link to={to} className={cn("px-3 py-2 rounded-md text-sm font-medium transition-colors", active ? "bg-accent text-accent-foreground" : "text-muted-foreground hover:text-foreground hover:bg-accent")}>{children}</Link>
+    <Link
+      to={to}
+      className={cn(
+        "px-3 py-2 rounded-md text-sm font-medium transition-colors",
+        active
+          ? "bg-accent text-accent-foreground"
+          : "text-muted-foreground hover:text-foreground hover:bg-accent",
+      )}
+    >
+      {children}
+    </Link>
   );
 };
 
@@ -19,19 +42,35 @@ export default function Header() {
     <header className="sticky top-0 z-40 w-full border-b bg-background/90 shadow-sm backdrop-blur">
       <div className="container flex h-16 items-center justify-between">
         <Link to="/" className="flex items-center gap-3 font-bold text-lg">
-          <span className="inline-grid place-items-center h-9 w-9 rounded-full bg-primary text-primary-foreground shadow-sm"><Recycle className="h-5 w-5"/></span>
+          <span className="inline-grid place-items-center h-9 w-9 rounded-full bg-primary text-primary-foreground shadow-sm">
+            <Recycle className="h-5 w-5" />
+          </span>
           <div className="leading-tight">
             <div>Spot Garbage</div>
-            <div className="text-xs text-muted-foreground">Waste Detection & Reporting</div>
+            <div className="text-xs text-muted-foreground">
+              Waste Detection & Reporting
+            </div>
           </div>
         </Link>
         <nav className="hidden md:flex items-center gap-1">
           <NavLink to="/">Home</NavLink>
           {user?.role === "user" && (
             <>
-              <NavLink to="/report"><span className="inline-flex items-center gap-1"><PlusCircle className="h-4 w-4" /> Report</span></NavLink>
-              <NavLink to="/my-posts"><span className="inline-flex items-center gap-1"><ScrollText className="h-4 w-4" /> My Posts</span></NavLink>
-              <NavLink to="/track"><span className="inline-flex items-center gap-1"><ListChecks className="h-4 w-4" /> Track</span></NavLink>
+              <NavLink to="/report">
+                <span className="inline-flex items-center gap-1">
+                  <PlusCircle className="h-4 w-4" /> Report
+                </span>
+              </NavLink>
+              <NavLink to="/my-posts">
+                <span className="inline-flex items-center gap-1">
+                  <ScrollText className="h-4 w-4" /> My Posts
+                </span>
+              </NavLink>
+              <NavLink to="/track">
+                <span className="inline-flex items-center gap-1">
+                  <ListChecks className="h-4 w-4" /> Track
+                </span>
+              </NavLink>
             </>
           )}
           {user?.role === "worker" && (
@@ -43,8 +82,22 @@ export default function Header() {
         <div className="flex items-center gap-2">
           {user ? (
             <div className="flex items-center gap-3">
-              <Link to="/profile" className="text-sm text-muted-foreground hover:text-foreground inline-flex items-center gap-2"><User2 className="h-4 w-4" /> {user.name} • {user.role === 'worker' ? 'Admin' : 'User'}</Link>
-              <Button variant="secondary" onClick={() => { logout(); navigate("/"); }}>Logout</Button>
+              <Link
+                to="/profile"
+                className="text-sm text-muted-foreground hover:text-foreground inline-flex items-center gap-2"
+              >
+                <User2 className="h-4 w-4" /> {user.name} •{" "}
+                {user.role === "worker" ? "Admin" : "User"}
+              </Link>
+              <Button
+                variant="secondary"
+                onClick={() => {
+                  logout();
+                  navigate("/");
+                }}
+              >
+                Logout
+              </Button>
             </div>
           ) : (
             <Button onClick={() => navigate("/login")}>Login</Button>
