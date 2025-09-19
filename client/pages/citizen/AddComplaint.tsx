@@ -82,7 +82,7 @@ export default function AddComplaint() {
         </div>
         <div className="grid gap-2">
           <Label htmlFor="desc">Description</Label>
-          <Textarea id="desc" value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Add details that help workers locate and assess the site" />
+          <Textarea id="desc" value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Add details that help admins locate and assess the site" />
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="grid gap-2">
