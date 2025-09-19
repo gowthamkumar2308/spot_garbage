@@ -15,7 +15,7 @@ export default function Index() {
               Rescue remote areas from dump-yard impact.
             </h1>
             <p className="mt-4 text-lg text-muted-foreground">
-              Detect, report, and track garbage dumps in real-time with geotagged images and ML verification. Empower citizens and sanitary workers to act fast.
+              Detect, report, and track garbage dumps in real-time with geotagged images and ML verification. Empower citizens and admins (sanitary workers) to act fast.
             </p>
             <div className="mt-6 flex flex-wrap gap-3">
               <Button asChild>
