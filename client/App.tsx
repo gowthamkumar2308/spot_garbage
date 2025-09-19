@@ -51,7 +51,7 @@ const Root = () => (
               <Route
                 path="/report"
                 element={
-                  <ProtectedRoute roles={["citizen", "admin"]}>
+                  <ProtectedRoute roles={["user", "worker"]}>
                     <AddComplaint />
                   </ProtectedRoute>
                 }
@@ -59,7 +59,7 @@ const Root = () => (
               <Route
                 path="/my-posts"
                 element={
-                  <ProtectedRoute roles={["citizen", "admin"]}>
+                  <ProtectedRoute roles={["user", "worker"]}>
                     <MyPosts />
                   </ProtectedRoute>
                 }
@@ -67,7 +67,7 @@ const Root = () => (
               <Route
                 path="/track"
                 element={
-                  <ProtectedRoute roles={["citizen", "admin", "worker"]}>
+                  <ProtectedRoute roles={["user", "worker"]}>
                     <TrackComplaints />
                   </ProtectedRoute>
                 }
@@ -75,7 +75,7 @@ const Root = () => (
               <Route
                 path="/profile"
                 element={
-                  <ProtectedRoute roles={["citizen", "admin", "worker"]}>
+                  <ProtectedRoute roles={["user", "worker"]}>
                     <Profile />
                   </ProtectedRoute>
                 }
@@ -84,20 +84,12 @@ const Root = () => (
               <Route
                 path="/worker/all-posts"
                 element={
-                  <ProtectedRoute roles={["worker", "admin"]}>
+                  <ProtectedRoute roles={["worker"]}>
                     <WorkerAllPosts />
                   </ProtectedRoute>
                 }
               />
-              {/* Admin */}
-              <Route
-                path="/admin/map"
-                element={
-                  <ProtectedRoute roles={["admin", "worker"]}>
-                    <AdminMapView />
-                  </ProtectedRoute>
-                }
-              />
+              <Route path="/register" element={<Register />} />
               {/* Catch-all */}
               <Route path="*" element={<NotFound />} />
             </Routes>
