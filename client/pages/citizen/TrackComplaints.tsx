@@ -41,7 +41,7 @@ export default function TrackComplaints() {
                 <Badge>{c.status}</Badge>
               </div>
             </div>
-            {user?.role !== 'citizen' && c.status !== 'collected' && (
+            {user?.role === 'worker' && c.status !== 'collected' && (
               <div className="flex gap-2">
                 <Button variant="secondary" onClick={() => updateComplaintStatus(c.id, 'in_progress')}>In Progress</Button>
                 <Button onClick={() => updateComplaintStatus(c.id, 'collected')}>Collected</Button>
