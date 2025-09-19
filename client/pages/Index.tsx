@@ -22,7 +22,7 @@ export default function Index() {
                 <Link to="/report" className="inline-flex items-center gap-2">Report Garbage <ArrowRight className="h-4 w-4"/></Link>
               </Button>
               <Button variant="secondary" asChild>
-                <Link to="/login" className="inline-flex items-center gap-2">Sign in as Worker</Link>
+                <Link to="/login" className="inline-flex items-center gap-2">Sign in as Admin</Link>
               </Button>
             </div>
             <ul className="mt-6 grid gap-2 text-sm text-muted-foreground">
@@ -48,7 +48,7 @@ export default function Index() {
                 </div>
                 <div className="rounded-md bg-gradient-to-br from-emerald-500/10 to-teal-500/10 p-4 border">
                   <div className="font-medium mb-1 inline-flex items-center gap-2"><CheckCircle2 className="h-4 w-4"/> Collect</div>
-                  <p className="text-muted-foreground">Workers close complaints fast.</p>
+                  <p className="text-muted-foreground">Admins close complaints fast.</p>
                 </div>
               </div>
             </div>
@@ -58,7 +58,7 @@ export default function Index() {
 
       <section className="border-t bg-muted/30">
         <div className="container py-16">
-          <h2 className="text-2xl font-bold mb-6">Designed for people and sanitary workers</h2>
+          <h2 className="text-2xl font-bold mb-6">Designed for citizens and admins</h2>
           <div className="grid md:grid-cols-2 gap-6">
             <div className="rounded-xl border bg-card p-6">
               <h3 className="font-semibold text-lg">For Citizens</h3>
