@@ -30,10 +30,18 @@ export default function AddComplaint() {
     reader.readAsDataURL(f);
   };
 
+  const parseCoord = (val: string, fallback?: number) => {
+    if (!val || val.trim() === "") return typeof fallback === 'number' ? fallback : NaN;
+    // Allow comma or space as decimal separator
+    const normalized = val.trim().replace(/,/, '.');
+    const n = Number(normalized);
+    return isFinite(n) ? n : NaN;
+  };
+
   const getLocation = () => {
-    // Default map location (fallback)
-    const fallbackLat = 18.060621419165987;
-    const fallbackLng = 83.4052036256904;
+    // Default map location (Chintalavalasa)
+    const fallbackLat = 18.060534;
+    const fallbackLng = 83.405583;
 
     if (!navigator.geolocation) {
       toast.info("Geolocation not supported — using default location");
