@@ -9,6 +9,8 @@ interface Account {
   password: string; // Stored in plain text for demo only (do NOT do this in production)
   role: Role;
   name?: string;
+  phone?: string;
+  dob?: string;
 }
 
 interface AppState {
@@ -19,6 +21,8 @@ interface AppState {
   complaints: Complaint[];
   addComplaint: (c: Omit<Complaint, "id" | "status" | "createdAt">) => Complaint;
   updateComplaintStatus: (id: string, status: Complaint["status"]) => void;
+  deleteComplaint: (id: string) => void;
+  updateAccount: (id: string, updates: Partial<Pick<Account, "name" | "email" | "phone" | "dob">>) => void;
   accounts: Account[];
 }
 
