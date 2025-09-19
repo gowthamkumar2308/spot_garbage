@@ -152,8 +152,9 @@ export default function AddComplaint() {
           </div>
         </div>
         <div className="grid gap-2">
-          <Label>Photo</Label>
+          <Label>Photo <span className="text-destructive-foreground">*</span></Label>
           <Input type="file" accept="image/*" onChange={(e) => e.target.files && onFile(e.target.files[0])} />
+          {submitted && !image && <div className="text-sm text-destructive mt-1">Photo is required</div>}
           {image && <img src={image} alt="preview" className="mt-2 h-48 w-full object-cover rounded-md border" />}
         </div>
         <div className="flex justify-end">
