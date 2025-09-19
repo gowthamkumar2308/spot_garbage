@@ -75,7 +75,7 @@ export default function AddComplaint() {
     <div className="container max-w-3xl py-8">
       <h1 className="text-3xl font-bold mb-1">Report Garbage</h1>
       <p className="text-muted-foreground mb-6">Upload a photo, tag waste type, and submit your location.</p>
-      <div className="grid gap-6 rounded-lg border p-6">
+      <div className="grid gap-6 rounded-2xl border p-6 bg-card shadow-sm">
         <div className="grid gap-2">
           <Label htmlFor="title">Title</Label>
           <Input id="title" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Short summary" />
