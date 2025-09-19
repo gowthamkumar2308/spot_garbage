@@ -2,6 +2,7 @@ import { useParams, Link, useNavigate } from "react-router-dom";
 import { useApp } from "@/context/AppState";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { useParams, Link, useNavigate } from "react-router-dom";
 
 function MapEmbed({ lat, lng }: { lat: number; lng: number }) {
   const bbox = `${lng - 0.01},${lat - 0.01},${lng + 0.01},${lat + 0.01}`;
