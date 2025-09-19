@@ -90,6 +90,14 @@ const Root = () => (
                   </ProtectedRoute>
                 }
               />
+              <Route
+                path="/worker/report/:id"
+                element={
+                  <ProtectedRoute roles={["worker"]}>
+                    <ReportView />
+                  </ProtectedRoute>
+                }
+              />
               <Route path="/register" element={<Register />} />
               {/* Catch-all */}
               <Route path="*" element={<NotFound />} />
