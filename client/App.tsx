@@ -10,12 +10,12 @@ import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import { AppProvider, useApp } from "./context/AppState";
 import Login from "./pages/Login";
+import Register from "./pages/Register";
 import AddComplaint from "./pages/citizen/AddComplaint";
 import MyPosts from "./pages/citizen/MyPosts";
 import TrackComplaints from "./pages/citizen/TrackComplaints";
 import Profile from "./pages/citizen/Profile";
 import WorkerAllPosts from "./pages/worker/AllPosts";
-import AdminMapView from "./pages/admin/MapView";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 
