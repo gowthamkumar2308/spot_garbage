@@ -18,6 +18,8 @@ export default function AddComplaint() {
   const [toxicity, setToxicity] = useState<Toxicity>("low");
   const [image, setImage] = useState<string | undefined>(undefined);
   const [loc, setLoc] = useState<{ lat: number; lng: number } | null>(null);
+  const [latStr, setLatStr] = useState<string>("");
+  const [lngStr, setLngStr] = useState<string>("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -33,15 +35,22 @@ export default function AddComplaint() {
       return;
     }
     navigator.geolocation.getCurrentPosition(
-      (pos) => setLoc({ lat: pos.coords.latitude, lng: pos.coords.longitude }),
+      (pos) => {
+        const coords = { lat: pos.coords.latitude, lng: pos.coords.longitude };
+        setLoc(coords);
+        setLatStr(String(coords.lat));
+        setLngStr(String(coords.lng));
+      },
       () => toast.error("Unable to fetch location")
     );
   };
 
   const submit = async () => {
     if (!user) return;
-    if (!loc) {
-      toast.error("Please add location");
+    const lat = Number(latStr || (loc?.lat ?? NaN));
+    const lng = Number(lngStr || (loc?.lng ?? NaN));
+    if (!isFinite(lat) || !isFinite(lng)) {
+      toast.error("Please add a valid location");
       return;
     }
     setLoading(true);
@@ -50,8 +59,8 @@ export default function AddComplaint() {
       title,
       description,
       image,
-      lat: loc.lat,
-      lng: loc.lng,
+      lat,
+      lng,
       wasteType,
       toxicity,
       verified: ml.verified,
