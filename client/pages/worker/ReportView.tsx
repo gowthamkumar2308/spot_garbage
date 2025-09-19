@@ -71,11 +71,12 @@ export default function ReportView() {
           <div className="rounded-2xl border bg-card p-4 shadow-sm">
             <div className="text-sm text-muted-foreground mb-2">Location</div>
             <div className="mb-3">{c.lat.toFixed(6)}, {c.lng.toFixed(6)}</div>
+            <div className="text-sm text-muted-foreground mb-2">{isFallback ? fallbackAddress : ''}</div>
             <MapEmbed lat={c.lat} lng={c.lng} />
             <div className="mt-3 flex gap-2">
               <a className="text-sm underline" href={`https://maps.google.com/?q=${c.lat},${c.lng}`} target="_blank" rel="noreferrer">Open in Google Maps</a>
               {isFallback && (
-                <a className="text-sm underline" href={`https://maps.google.com/?q=${fallbackLat},${fallbackLng}`} target="_blank" rel="noreferrer">Open default location</a>
+                <a className="text-sm underline" href={fallbackMapLink} target="_blank" rel="noreferrer">Open default location</a>
               )}
             </div>
           </div>
