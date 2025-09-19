@@ -16,6 +16,7 @@ import MyPosts from "./pages/citizen/MyPosts";
 import TrackComplaints from "./pages/citizen/TrackComplaints";
 import Profile from "./pages/citizen/Profile";
 import WorkerAllPosts from "./pages/worker/AllPosts";
+import ReportView from "./pages/worker/ReportView";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 
