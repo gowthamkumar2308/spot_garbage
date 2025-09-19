@@ -35,7 +35,7 @@ export default function MyPosts() {
       </div>
       <ul className="grid gap-4">
         {filtered.map((c) => (
-          <li key={c.id} className="rounded-lg border p-4 grid gap-3 md:grid-cols-[160px_1fr_auto] items-center">
+          <li key={c.id} className="rounded-2xl border p-4 grid gap-3 md:grid-cols-[160px_1fr_auto] items-center bg-card shadow-sm">
             {c.image ? (
               <img src={c.image} alt={c.title} className="h-24 w-full md:w-40 object-cover rounded" />
             ) : (
