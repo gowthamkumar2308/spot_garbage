@@ -76,8 +76,8 @@ export default function AddComplaint() {
   const submit = async () => {
     setSubmitted(true);
     if (!user) return;
-    const lat = Number(latStr || (loc?.lat ?? NaN));
-    const lng = Number(lngStr || (loc?.lng ?? NaN));
+    const lat = parseCoord(latStr, loc?.lat);
+    const lng = parseCoord(lngStr, loc?.lng);
     if (!title.trim()) {
       toast.error("Title is required");
       return;
