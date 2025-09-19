@@ -40,7 +40,7 @@ export default function Header() {
         <div className="flex items-center gap-2">
           {user ? (
             <div className="flex items-center gap-3">
-              <Link to="/profile" className="text-sm text-muted-foreground hover:text-foreground inline-flex items-center gap-2"><User2 className="h-4 w-4" /> {user.name} • {user.role}</Link>
+              <Link to="/profile" className="text-sm text-muted-foreground hover:text-foreground inline-flex items-center gap-2"><User2 className="h-4 w-4" /> {user.name} • {user.role === 'worker' ? 'Admin' : 'User'}</Link>
               <Button variant="secondary" onClick={() => { logout(); navigate("/"); }}>Logout</Button>
             </div>
           ) : (
