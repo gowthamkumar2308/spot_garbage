@@ -30,7 +30,7 @@ export default function TrackComplaints() {
       </div>
       <ul className="grid gap-4">
         {list.map((c) => (
-          <li key={c.id} className="rounded-lg border p-4 grid gap-3 md:grid-cols-[1fr_auto] items-center">
+          <li key={c.id} className="rounded-2xl border p-4 grid gap-3 md:grid-cols-[1fr_auto] items-center bg-card shadow-sm">
             <div>
               <h3 className="font-semibold">{c.title} <span className="text-xs text-muted-foreground">({c.lat.toFixed(3)}, {c.lng.toFixed(3)})</span></h3>
               <p className="text-sm text-muted-foreground line-clamp-2">{c.description}</p>
