@@ -61,7 +61,7 @@ export default function Index() {
           <h2 className="text-2xl font-bold mb-6">Designed for people and sanitary workers</h2>
           <div className="grid md:grid-cols-2 gap-6">
             <div className="rounded-xl border bg-card p-6">
-              <h3 className="font-semibold text-lg">For Citizens (Sanitary Collectors)</h3>
+              <h3 className="font-semibold text-lg">For Citizens</h3>
               <ul className="mt-3 list-disc pl-5 text-muted-foreground">
                 <li>Upload geotagged photos</li>
                 <li>Select waste type: organic, plastic, e-waste, etc.</li>
@@ -71,14 +71,14 @@ export default function Index() {
               <Button className="mt-4" asChild><Link to="/report">Start Reporting</Link></Button>
             </div>
             <div className="rounded-xl border bg-card p-6">
-              <h3 className="font-semibold text-lg">For Sanitary Workers</h3>
+              <h3 className="font-semibold text-lg">For Admins (Sanitary Workers)</h3>
               <ul className="mt-3 list-disc pl-5 text-muted-foreground">
                 <li>View all complaints city-wide</li>
                 <li>Prioritize by toxicity and waste type</li>
                 <li>Update status to Collected after cleanup</li>
                 <li>Map view to plan routes</li>
               </ul>
-              <Button className="mt-4" variant="secondary" asChild><Link to="/login">Sign in as Worker</Link></Button>
+              <Button className="mt-4" variant="secondary" asChild><Link to="/login">Sign in as Admin</Link></Button>
             </div>
           </div>
         </div>
