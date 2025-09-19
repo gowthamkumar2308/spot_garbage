@@ -31,12 +31,12 @@ export default function AddComplaint() {
   };
 
   const getLocation = () => {
-    // Fallback coordinates (DMS: 17°45'01.5"N 83°15'01.4"E) — Maharaj Vijayaram Gajapathi Raj College of Engineering (Autonomous)
-    const fallbackLat = 17 + 45 / 60 + 1.5 / 3600; // ~17.7504167
-    const fallbackLng = 83 + 15 / 60 + 1.4 / 3600; // ~83.2503889
+    // Default map location (fallback)
+    const fallbackLat = 18.060621419165987;
+    const fallbackLng = 83.4052036256904;
 
     if (!navigator.geolocation) {
-      toast.info("Geolocation not supported — using default location (Maharaj Vijayaram Gajapathi Raj College of Engineering)");
+      toast.info("Geolocation not supported — using default location");
       const coords = { lat: fallbackLat, lng: fallbackLng };
       setLoc(coords);
       setLatStr(String(coords.lat));
@@ -53,7 +53,7 @@ export default function AddComplaint() {
       },
       (err) => {
         // On permission denied or other errors, default to provided coordinates
-        toast.info("Using default location (Maharaj Vijayaram Gajapathi Raj College of Engineering) — grant location permission for live coordinates");
+        toast.info("Using default location — grant location permission for live coordinates");
         const coords = { lat: fallbackLat, lng: fallbackLng };
         setLoc(coords);
         setLatStr(String(coords.lat));
