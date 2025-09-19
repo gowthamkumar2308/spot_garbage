@@ -16,11 +16,14 @@ export default function Header() {
   const { user, logout } = useApp();
   const navigate = useNavigate();
   return (
-    <header className="sticky top-0 z-40 w-full border-b bg-background/80 backdrop-blur">
+    <header className="sticky top-0 z-40 w-full border-b bg-background/90 shadow-sm backdrop-blur">
       <div className="container flex h-16 items-center justify-between">
-        <Link to="/" className="flex items-center gap-2 font-bold text-lg">
-          <Recycle className="text-primary" />
-          <span>Spot Garbage</span>
+        <Link to="/" className="flex items-center gap-3 font-bold text-lg">
+          <span className="inline-grid place-items-center h-9 w-9 rounded-full bg-primary text-primary-foreground shadow-sm"><Recycle className="h-5 w-5"/></span>
+          <div className="leading-tight">
+            <div>Spot Garbage</div>
+            <div className="text-xs text-muted-foreground">Waste Detection & Reporting</div>
+          </div>
         </Link>
         <nav className="hidden md:flex items-center gap-1">
           <NavLink to="/">Home</NavLink>
