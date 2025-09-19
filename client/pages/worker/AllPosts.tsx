@@ -1,6 +1,7 @@
 import { useApp } from "@/context/AppState";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 
 export default function WorkerAllPosts() {
   const { complaints, updateComplaintStatus } = useApp();
