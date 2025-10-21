@@ -187,6 +187,17 @@ export default function ReportView() {
               No image provided
             </div>
           )}
+
+          {c.collectedImages && c.collectedImages.length > 0 && (
+            <div className="mt-4">
+              <div className="text-sm text-muted-foreground mb-2">Collected photos</div>
+              <div className="grid grid-cols-2 gap-2">
+                {c.collectedImages.map((src, i) => (
+                  <img key={i} src={src} alt={`collected-${i}`} className="w-full h-24 object-cover rounded" />
+                ))}
+              </div>
+            </div>
+          )}
         </aside>
       </div>
     </div>
