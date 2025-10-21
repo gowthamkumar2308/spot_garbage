@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { MapContainer, TileLayer, useMapEvents, Circle } from "react-leaflet";
-import "leaflet/dist/leaflet.css";
 
 function ClickHandler({ onSelect }: { onSelect: (lat: number, lng: number) => void }) {
   useMapEvents({
