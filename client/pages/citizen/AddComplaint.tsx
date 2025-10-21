@@ -246,6 +246,14 @@ export default function AddComplaint() {
                   onChange={(e) => setLngStr(e.target.value)}
                 />
               </div>
+              <div className="mt-2">
+                <div className="text-sm mb-2">Pick location on map</div>
+                <MapPicker
+                  lat={loc?.lat ?? 18.060534}
+                  lng={loc?.lng ?? 83.405583}
+                  onSelect={onMapSelect}
+                />
+              </div>
             </div>
             {submitted &&
               (!isFinite(parseCoord(latStr, loc?.lat)) ||
