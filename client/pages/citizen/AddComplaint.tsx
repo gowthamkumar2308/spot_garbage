@@ -36,6 +36,13 @@ export default function AddComplaint() {
     reader.readAsDataURL(f);
   };
 
+  // When map picker selects location, update lat/lng strings and loc
+  const onMapSelect = (lat: number, lng: number) => {
+    setLoc({ lat, lng });
+    setLatStr(String(lat));
+    setLngStr(String(lng));
+  };
+
   const parseCoord = (val: string, fallback?: number) => {
     if (!val || val.trim() === "")
       return typeof fallback === "number" ? fallback : NaN;
