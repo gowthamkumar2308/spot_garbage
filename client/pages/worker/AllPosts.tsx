@@ -4,7 +4,50 @@ import { Link } from "react-router-dom";
 import { useApp } from "@/context/AppState";
 
 export default function WorkerAllPosts() {
-  const { complaints, updateComplaintStatus } = useApp();
+  const { complaints, updateComplaintStatus, collectComplaint } = useApp();
+
+  const readFilesAsDataUrls = (files: FileList | null) =>
+    new Promise<string[]>((resolve, reject) => {
+      if (!files || files.length === 0) return resolve([]);
+      const arr = Array.from(files);
+      Promise.all(
+        arr.map(
+          (file) =>
+            new Promise<string>((res, rej) => {
+              const reader = new FileReader();
+              reader.onload = () => res(String(reader.result));
+              reader.onerror = (e) => rej(e);
+              reader.readAsDataURL(file);
+            }),
+        ),
+      )
+        .then((data) => resolve(data))
+        .catch(reject);
+    });
+
+  const handleCollect = async (id: string) => {
+    // Create an invisible file input to prompt the admin for photos
+    const input = document.createElement("input");
+    input.type = "file";
+    input.accept = "image/*";
+    input.multiple = true;
+    input.onchange = async () => {
+      try {
+        const images = await readFilesAsDataUrls(input.files);
+        if (!images || images.length === 0) {
+          // If no photos selected, do not mark as collected
+          return;
+        }
+        collectComplaint(id, images);
+      } catch (err) {
+        console.error(err);
+        // Fallback: mark as collected without photos
+        updateComplaintStatus(id, "collected");
+      }
+    };
+    input.click();
+  };
+
   return (
     <div className="container py-8">
       <div className="flex items-end justify-between gap-4 mb-4">
@@ -17,7 +60,7 @@ export default function WorkerAllPosts() {
       </div>
       <ul className="grid gap-4">
         {complaints.map((c) => (
-          <li
+        <li
             key={c.id}
             className="rounded-2xl border p-4 grid gap-3 md:grid-cols-[1fr_auto] items-center bg-card shadow-sm"
           >
@@ -60,7 +103,7 @@ export default function WorkerAllPosts() {
                   In Progress
                 </Button>
                 <Button
-                  onClick={() => updateComplaintStatus(c.id, "collected")}
+                  onClick={() => handleCollect(c.id)}
                 >
                   Collected
                 </Button>
