@@ -40,6 +40,7 @@ export interface Complaint {
   title: string;
   description: string;
   image?: string; // data URL
+  collectedImages?: string[]; // images taken by workers when collecting
   lat: number;
   lng: number;
   wasteType: WasteType;
