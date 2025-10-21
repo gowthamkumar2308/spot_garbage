@@ -103,7 +103,7 @@ export default function ReportView() {
               >
                 In Progress
               </Button>
-              <Button onClick={() => updateComplaintStatus(c.id, "collected")}>
+              <Button onClick={() => handleCollect(c.id)}>
                 Collected
               </Button>
             </>
