@@ -55,7 +55,7 @@ export default function TrackComplaints() {
     const items =
       user?.role === "worker"
         ? complaints
-        : complaints.filter((c) => c.reporterName === user?.name);
+    : complaints.filter((c) => c.reporterId === user?.id);
     return items.sort((a, b) =>
       sort === "tox"
         ? a.toxicity > b.toxicity
