@@ -11,8 +11,45 @@ import {
 } from "@/components/ui/select";
 
 export default function TrackComplaints() {
-  const { complaints, user, updateComplaintStatus } = useApp();
+  const { complaints, user, updateComplaintStatus, collectComplaint } = useApp();
   const [sort, setSort] = useState<string>("new");
+
+  const readFilesAsDataUrls = (files: FileList | null) =>
+    new Promise<string[]>((resolve, reject) => {
+      if (!files || files.length === 0) return resolve([]);
+      const arr = Array.from(files);
+      Promise.all(
+        arr.map(
+          (file) =>
+            new Promise<string>((res, rej) => {
+              const reader = new FileReader();
+              reader.onload = () => res(String(reader.result));
+              reader.onerror = (e) => rej(e);
+              reader.readAsDataURL(file);
+            }),
+        ),
+      )
+        .then((data) => resolve(data))
+        .catch(reject);
+    });
+
+  const handleCollect = async (id: string) => {
+    const input = document.createElement("input");
+    input.type = "file";
+    input.accept = "image/*";
+    input.multiple = true;
+    input.onchange = async () => {
+      try {
+        const images = await readFilesAsDataUrls(input.files);
+        if (!images || images.length === 0) return;
+        collectComplaint(id, images);
+      } catch (err) {
+        console.error(err);
+        updateComplaintStatus(id, "collected");
+      }
+    };
+    input.click();
+  };
 
   const list = useMemo(() => {
     const items =
