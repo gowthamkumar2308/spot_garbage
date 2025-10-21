@@ -16,7 +16,7 @@ export default function MyPosts() {
   const [tox, setTox] = useState<string>("all");
 
   const mine = useMemo(
-    () => complaints.filter((c) => c.reporterName === user?.name),
+    () => complaints.filter((c) => c.reporterId === user?.id),
     [complaints, user],
   );
   const filtered = useMemo(
