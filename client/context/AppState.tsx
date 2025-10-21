@@ -28,6 +28,8 @@ interface AppState {
     c: Omit<Complaint, "id" | "status" | "createdAt">,
   ) => Complaint;
   updateComplaintStatus: (id: string, status: Complaint["status"]) => void;
+  // When a worker marks a complaint as collected they must provide photos
+  collectComplaint: (id: string, images: string[]) => void;
   deleteComplaint: (id: string) => void;
   updateAccount: (
     id: string,
@@ -52,16 +54,21 @@ function loadState(): { user: User | null; complaints: Complaint[] } {
 function persist(state: { user: User | null; complaints: Complaint[] }) {
   // Persist complaints but keep small image data URLs if present to allow previews.
   // Avoid storing huge images that can exceed quota.
+  const keepImage = (img: unknown) =>
+    typeof img === "string" && img.length < 200_000 ? img : undefined;
   try {
     const sanitized = {
       user: state.user,
       complaints: state.complaints.map((c) => {
-        // If image is a small data URL, keep it; otherwise drop it to save space.
-        const image =
-          typeof c.image === "string" && c.image.length < 200_000
-            ? c.image
-            : undefined;
-        const { image: _img, ...rest } = { ...c, image };
+        const image = keepImage(c.image);
+        const collectedImages = Array.isArray(c.collectedImages)
+          ? c.collectedImages.map(keepImage).filter(Boolean) as string[]
+          : undefined;
+        const { image: _img, collectedImages: _col, ...rest } = {
+          ...c,
+          image,
+          collectedImages,
+        };
         return rest;
       }),
     };
@@ -71,11 +78,15 @@ function persist(state: { user: User | null; complaints: Complaint[] }) {
       const small = {
         user: state.user,
         complaints: state.complaints.slice(0, 20).map((c) => {
-          const image =
-            typeof c.image === "string" && c.image.length < 200_000
-              ? c.image
-              : undefined;
-          const { image: _img, ...rest } = { ...c, image };
+          const image = keepImage(c.image);
+          const collectedImages = Array.isArray(c.collectedImages)
+            ? c.collectedImages.map(keepImage).filter(Boolean) as string[]
+            : undefined;
+          const { image: _img, collectedImages: _col, ...rest } = {
+            ...c,
+            image,
+            collectedImages,
+          };
           return rest;
         }),
       };
@@ -212,6 +223,21 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     if (status === "collected") toast.success("Marked as Collected");
   };
 
+  const collectComplaint: AppState["collectComplaint"] = (id, images) => {
+    setComplaints((prev) =>
+      prev.map((c) =>
+        c.id === id
+          ? {
+              ...c,
+              status: "collected",
+              collectedImages: images && images.length ? images : undefined,
+            }
+          : c,
+      ),
+    );
+    toast.success("Marked as Collected with photos");
+  };
+
   const deleteComplaint = (id: string) => {
     setComplaints((prev) => prev.filter((c) => c.id !== id));
     toast.success("Complaint deleted");
@@ -244,6 +270,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       complaints,
       addComplaint,
       updateComplaintStatus,
+      collectComplaint,
       deleteComplaint,
       updateAccount,
       accounts,
