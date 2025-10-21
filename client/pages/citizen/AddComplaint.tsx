@@ -15,6 +15,7 @@ import { verifyImageContainsGarbage } from "@/services/ml";
 import type { Toxicity, WasteType } from "@shared/api";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+import MapPicker from "@/components/MapPicker";
 
 export default function AddComplaint() {
   const { addComplaint, user } = useApp();
