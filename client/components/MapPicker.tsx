@@ -28,12 +28,21 @@ export default function MapPicker({
       try {
         map.setView([lat, lng]);
         // sometimes need to invalidate size for correct rendering
-        setTimeout(() => map.invalidateSize && map.invalidateSize(), 0);
+        setTimeout(() => map.invalidateSize && map.invalidateSize(), 50);
       } catch (e) {
         // ignore
       }
     }
   }, [lat, lng, map]);
+
+  useEffect(() => {
+    if (!map) return;
+    const handler = () => map.invalidateSize && map.invalidateSize();
+    window.addEventListener("resize", handler);
+    // also call once to ensure correct layout
+    setTimeout(handler, 100);
+    return () => window.removeEventListener("resize", handler);
+  }, [map]);
 
   return (
     <div className="w-full h-64 rounded overflow-hidden border">
