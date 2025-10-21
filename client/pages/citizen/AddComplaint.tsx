@@ -94,6 +94,18 @@ export default function AddComplaint() {
   const submit = async () => {
     setSubmitted(true);
     if (!user) return;
+
+    // Try to obtain a fresh high-accuracy location right before submitting
+    try {
+      const pos = await getCurrentPositionAsync({ enableHighAccuracy: true, timeout: 8000, maximumAge: 0 });
+      const coords = { lat: pos.coords.latitude, lng: pos.coords.longitude };
+      setLoc(coords);
+      setLatStr(String(coords.lat));
+      setLngStr(String(coords.lng));
+    } catch (err) {
+      // Ignore — we'll use whatever location is available (prefilled or manual)
+    }
+
     const lat = parseCoord(latStr, loc?.lat);
     const lng = parseCoord(lngStr, loc?.lng);
     if (!title.trim()) {
