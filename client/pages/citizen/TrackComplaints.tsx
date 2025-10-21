@@ -9,7 +9,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useApp } from "@/context/AppState";
 
 export default function TrackComplaints() {
   const { complaints, user, updateComplaintStatus, collectComplaint } = useApp();
