@@ -240,11 +240,21 @@ export default function AddComplaint() {
                   placeholder="Latitude"
                   value={latStr}
                   onChange={(e) => setLatStr(e.target.value)}
+                  onBlur={() => {
+                    const lat = parseCoord(latStr, loc?.lat);
+                    const lng = parseCoord(lngStr, loc?.lng);
+                    if (isFinite(lat) && isFinite(lng)) setLoc({ lat, lng });
+                  }}
                 />
                 <Input
                   placeholder="Longitude"
                   value={lngStr}
                   onChange={(e) => setLngStr(e.target.value)}
+                  onBlur={() => {
+                    const lat = parseCoord(latStr, loc?.lat);
+                    const lng = parseCoord(lngStr, loc?.lng);
+                    if (isFinite(lat) && isFinite(lng)) setLoc({ lat, lng });
+                  }}
                 />
               </div>
               <div className="mt-2">
