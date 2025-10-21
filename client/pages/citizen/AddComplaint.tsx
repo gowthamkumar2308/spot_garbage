@@ -45,7 +45,7 @@ export default function AddComplaint() {
     return isFinite(n) ? n : NaN;
   };
 
-  const getLocation = () => {
+  const getLocation = (opts?: PositionOptions) => {
     // Default map location (Chintalavalasa)
     const fallbackLat = 18.060534;
     const fallbackLng = 83.405583;
@@ -76,8 +76,15 @@ export default function AddComplaint() {
         setLatStr(String(coords.lat));
         setLngStr(String(coords.lng));
       },
+      opts ?? { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 },
     );
   };
+
+  const getCurrentPositionAsync = (opts?: PositionOptions) =>
+    new Promise<GeolocationPosition>((resolve, reject) => {
+      if (!navigator.geolocation) return reject(new Error("Geolocation not supported"));
+      navigator.geolocation.getCurrentPosition(resolve, reject, opts ?? { enableHighAccuracy: true, timeout: 8000, maximumAge: 0 });
+    });
 
   // Attempt to prefill with live location on mount; falls back to default if unavailable
   useEffect(() => {
