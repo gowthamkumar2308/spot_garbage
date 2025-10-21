@@ -119,7 +119,7 @@ export default function TrackComplaints() {
                   In Progress
                 </Button>
                 <Button
-                  onClick={() => updateComplaintStatus(c.id, "collected")}
+                  onClick={() => handleCollect(c.id)}
                 >
                   Collected
                 </Button>
