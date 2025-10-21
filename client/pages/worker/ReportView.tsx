@@ -108,7 +108,7 @@ export default function ReportView() {
               </Button>
             </>
           )}
-          {user?.name === c.reporterName && (
+          {user?.id === c.reporterId && (
             <Button
               className="bg-red-600 text-white"
               onClick={() => {
