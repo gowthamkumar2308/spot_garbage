@@ -69,7 +69,11 @@ function persist(state: { user: User | null; complaints: Complaint[] }) {
           image,
           collectedImages,
         };
-        return rest;
+        return {
+          ...rest,
+          ...(image ? { image } : {}),
+          ...(collectedImages ? { collectedImages } : {}),
+        };
       }),
     };
     localStorage.setItem(STORAGE_KEY, JSON.stringify(sanitized));
@@ -83,11 +87,15 @@ function persist(state: { user: User | null; complaints: Complaint[] }) {
             ? c.collectedImages.map(keepImage).filter(Boolean) as string[]
             : undefined;
           const { image: _img, collectedImages: _col, ...rest } = {
-            ...c,
-            image,
-            collectedImages,
-          };
-          return rest;
+          ...c,
+          image,
+          collectedImages,
+        };
+        return {
+          ...rest,
+          ...(image ? { image } : {}),
+          ...(collectedImages ? { collectedImages } : {}),
+        };
         }),
       };
       localStorage.setItem(STORAGE_KEY, JSON.stringify(small));
