@@ -144,6 +144,7 @@ export default function AddComplaint() {
       wasteType,
       toxicity,
       verified: ml.verified,
+      reporterId: user.id,
       reporterName: user.name,
     });
     setLoading(false);
