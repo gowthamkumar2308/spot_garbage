@@ -48,6 +48,7 @@ export interface Complaint {
   verified: boolean;
   status: Status;
   createdAt: number;
+  reporterId: string; // account id of reporter
   reporterName: string;
 }
 
