@@ -76,10 +76,12 @@ export function seedComplaints(): Complaint[] {
       reporterName: "Rahul",
     },
   ];
-  return base.map((c) => ({
+  return base.map((c, i) => ({
     ...c,
     id: crypto.randomUUID(),
     createdAt: Date.now() - Math.floor(Math.random() * 1e7),
     status: c.verified ? "verified" : "submitted",
+    reporterId: `seed-${i}`,
+    reporterName: c.reporterName ?? `seed-${i}`,
   }));
 }
