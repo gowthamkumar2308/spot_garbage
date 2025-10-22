@@ -120,6 +120,14 @@ export default function AddComplaint() {
       toast.error("Title is required");
       return;
     }
+    if (!description.trim()) {
+      toast.error("Description is required");
+      return;
+    }
+    if (!wasteType) {
+      toast.error("Waste type is required");
+      return;
+    }
     if (!image) {
       toast.error("Photo is required");
       return;
