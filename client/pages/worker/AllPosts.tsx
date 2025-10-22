@@ -62,8 +62,15 @@ export default function WorkerAllPosts() {
         {complaints.map((c) => (
         <li
             key={c.id}
-            className="rounded-2xl border p-4 grid gap-3 md:grid-cols-[1fr_auto] items-center bg-card shadow-sm"
+            className="rounded-2xl border p-4 grid gap-3 md:grid-cols-[120px_1fr_auto] items-center bg-card shadow-sm"
           >
+            {c.image ? (
+              <img src={c.image} alt={c.title} className="h-24 w-full md:w-40 object-cover rounded" />
+            ) : (
+              <div className="h-24 w-full md:w-40 bg-muted rounded grid place-items-center text-muted-foreground">
+                No image
+              </div>
+            )}
             <div>
               <h3 className="font-semibold">
                 <Link to={`/worker/report/${c.id}`} className="hover:underline">
