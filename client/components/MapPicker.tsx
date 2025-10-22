@@ -1,9 +1,21 @@
 import React, { useEffect, useState } from "react";
-import { MapContainer, TileLayer, useMapEvents, Circle } from "react-leaflet";
+import { MapContainer, TileLayer, useMapEvents, Circle, Marker } from "react-leaflet";
+import L from "leaflet";
 
-function ClickHandler({ onSelect }: { onSelect: (lat: number, lng: number) => void }) {
+const markerIcon = L.icon({
+  iconUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
+  iconRetinaUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png",
+  shadowUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+  shadowSize: [41, 41],
+});
+
+function ClickHandler({ onSelect, interactive }: { onSelect: (lat: number, lng: number) => void; interactive: boolean }) {
   useMapEvents({
     click(e) {
+      if (!interactive) return;
       onSelect(e.latlng.lat, e.latlng.lng);
     },
   });
@@ -14,10 +26,12 @@ export default function MapPicker({
   lat,
   lng,
   onSelect,
+  interactive = true,
 }: {
   lat: number;
   lng: number;
   onSelect: (lat: number, lng: number) => void;
+  interactive?: boolean;
 }) {
   const [center, setCenter] = useState<[number, number]>([lat, lng]);
   const [map, setMap] = useState<any>(null);
@@ -51,15 +65,33 @@ export default function MapPicker({
         zoom={15}
         style={{ height: "100%", width: "100%" }}
         whenCreated={(m) => setMap(m)}
+        dragging={interactive}
+        doubleClickZoom={interactive}
+        zoomControl={true}
+        scrollWheelZoom={interactive}
       >
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
         <ClickHandler
+          interactive={interactive}
           onSelect={(a, b) => {
             onSelect(a, b);
             setCenter([a, b]);
           }}
         />
-        {/* show small circle at center */}
+        {/* show marker at center; draggable when interactive */}
+        <Marker
+          position={center}
+          icon={markerIcon}
+          draggable={interactive}
+          eventHandlers={{
+            dragend: (e: any) => {
+              const p = e.target.getLatLng();
+              onSelect(p.lat, p.lng);
+              setCenter([p.lat, p.lng]);
+            },
+          }}
+        />
+        {/* small visual circle for clarity */}
         <Circle center={center} radius={6} pathOptions={{ color: "red" }} />
       </MapContainer>
     </div>
