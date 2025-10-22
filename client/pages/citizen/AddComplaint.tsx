@@ -68,7 +68,9 @@ export default function AddComplaint() {
     }
 
     try {
-      const pos = await getCurrentPositionAsync(opts ?? { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 });
+      const pos = await getCurrentPositionAsync(
+        opts ?? { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 },
+      );
       const coords = { lat: pos.coords.latitude, lng: pos.coords.longitude };
       setLoc(coords);
       setLatStr(String(coords.lat));
@@ -79,13 +81,19 @@ export default function AddComplaint() {
       if (err && typeof err.code === "number") {
         switch (err.code) {
           case 1:
-            toast.error("Location permission denied — allow location or enter coordinates manually.");
+            toast.error(
+              "Location permission denied — allow location or enter coordinates manually.",
+            );
             break;
           case 2:
-            toast.error("Unable to determine your location. Enter coordinates manually or try again.");
+            toast.error(
+              "Unable to determine your location. Enter coordinates manually or try again.",
+            );
             break;
           case 3:
-            toast.error("Location request timed out. Try again or enter coordinates manually.");
+            toast.error(
+              "Location request timed out. Try again or enter coordinates manually.",
+            );
             break;
           default:
             toast.error("Could not get location — enter coordinates manually.");
@@ -102,8 +110,13 @@ export default function AddComplaint() {
 
   const getCurrentPositionAsync = (opts?: PositionOptions) =>
     new Promise<GeolocationPosition>((resolve, reject) => {
-      if (!navigator.geolocation) return reject(new Error("Geolocation not supported"));
-      navigator.geolocation.getCurrentPosition(resolve, reject, opts ?? { enableHighAccuracy: true, timeout: 8000, maximumAge: 0 });
+      if (!navigator.geolocation)
+        return reject(new Error("Geolocation not supported"));
+      navigator.geolocation.getCurrentPosition(
+        resolve,
+        reject,
+        opts ?? { enableHighAccuracy: true, timeout: 8000, maximumAge: 0 },
+      );
     });
 
   // Attempt to prefill with live location on mount; falls back to default if unavailable
@@ -129,7 +142,11 @@ export default function AddComplaint() {
 
     // Try to obtain a fresh high-accuracy location right before submitting
     try {
-      const pos = await getCurrentPositionAsync({ enableHighAccuracy: true, timeout: 8000, maximumAge: 0 });
+      const pos = await getCurrentPositionAsync({
+        enableHighAccuracy: true,
+        timeout: 8000,
+        maximumAge: 0,
+      });
       const coords = { lat: pos.coords.latitude, lng: pos.coords.longitude };
       setLoc(coords);
       setLatStr(String(coords.lat));
@@ -212,7 +229,9 @@ export default function AddComplaint() {
           )}
         </div>
         <div className="grid gap-2">
-          <Label htmlFor="desc">Description <span className="text-destructive-foreground">*</span></Label>
+          <Label htmlFor="desc">
+            Description <span className="text-destructive-foreground">*</span>
+          </Label>
           <Textarea
             id="desc"
             value={description}
@@ -220,12 +239,16 @@ export default function AddComplaint() {
             placeholder="Add details that help admins locate and assess the site"
           />
           {submitted && !description.trim() && (
-            <div className="text-sm text-destructive mt-1">Description is required</div>
+            <div className="text-sm text-destructive mt-1">
+              Description is required
+            </div>
           )}
         </div>
         <div className="grid gap-4">
           <div className="grid gap-2">
-            <Label>Waste type <span className="text-destructive-foreground">*</span></Label>
+            <Label>
+              Waste type <span className="text-destructive-foreground">*</span>
+            </Label>
             <Select
               value={wasteType}
               onValueChange={(v) => setWasteType(v as WasteType)}
@@ -243,7 +266,9 @@ export default function AddComplaint() {
               </SelectContent>
             </Select>
             {submitted && !wasteType && (
-              <div className="text-sm text-destructive mt-1">Waste type is required</div>
+              <div className="text-sm text-destructive mt-1">
+                Waste type is required
+              </div>
             )}
           </div>
 
@@ -265,13 +290,17 @@ export default function AddComplaint() {
           </div>
 
           <div className="grid gap-2">
-            <Label>Location <span className="text-destructive-foreground">*</span></Label>
+            <Label>
+              Location <span className="text-destructive-foreground">*</span>
+            </Label>
             <div className="flex gap-2 flex-col md:flex-row">
               <div className="flex gap-2">
                 <Button type="button" variant="secondary" onClick={getLocation}>
                   Use my location
                 </Button>
-                <span className="text-sm text-muted-foreground self-center">or enter manually</span>
+                <span className="text-sm text-muted-foreground self-center">
+                  or enter manually
+                </span>
               </div>
               <div className="grid grid-cols-2 gap-2 w-full md:w-auto">
                 <Input
@@ -304,9 +333,13 @@ export default function AddComplaint() {
                 />
               </div>
             </div>
-            {submitted && (!isFinite(parseCoord(latStr, loc?.lat)) || !isFinite(parseCoord(lngStr, loc?.lng))) && (
-              <div className="text-sm text-destructive mt-1">Valid latitude and longitude are required</div>
-            )}
+            {submitted &&
+              (!isFinite(parseCoord(latStr, loc?.lat)) ||
+                !isFinite(parseCoord(lngStr, loc?.lng))) && (
+                <div className="text-sm text-destructive mt-1">
+                  Valid latitude and longitude are required
+                </div>
+              )}
           </div>
         </div>
         <div className="grid gap-2">

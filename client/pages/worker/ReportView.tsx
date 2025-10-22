@@ -19,7 +19,13 @@ function MapEmbed({ lat, lng }: { lat: number; lng: number }) {
 export default function ReportView() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { complaints, updateComplaintStatus, deleteComplaint, user, collectComplaint } = useApp();
+  const {
+    complaints,
+    updateComplaintStatus,
+    deleteComplaint,
+    user,
+    collectComplaint,
+  } = useApp();
   const c = complaints.find((x) => x.id === id);
 
   const fallbackLat = 18.060534;
@@ -104,9 +110,7 @@ export default function ReportView() {
               >
                 In Progress
               </Button>
-              <Button onClick={() => handleCollect(c.id)}>
-                Collected
-              </Button>
+              <Button onClick={() => handleCollect(c.id)}>Collected</Button>
             </>
           )}
           {user?.id === c.reporterId && (
@@ -151,8 +155,15 @@ export default function ReportView() {
             <div className="text-sm text-muted-foreground mb-2">
               {isFallback ? fallbackAddress : ""}
             </div>
-            <div className="text-xs text-muted-foreground mb-2">Map: pin shows the saved location. This view is read-only.</div>
-            <MapPicker lat={c.lat} lng={c.lng} onSelect={() => {}} interactive={false} />
+            <div className="text-xs text-muted-foreground mb-2">
+              Map: pin shows the saved location. This view is read-only.
+            </div>
+            <MapPicker
+              lat={c.lat}
+              lng={c.lng}
+              onSelect={() => {}}
+              interactive={false}
+            />
             <div className="mt-3 flex gap-2">
               <a
                 className="text-sm underline"
@@ -192,10 +203,17 @@ export default function ReportView() {
 
           {c.collectedImages && c.collectedImages.length > 0 && (
             <div className="mt-4">
-              <div className="text-sm text-muted-foreground mb-2">Collected photos</div>
+              <div className="text-sm text-muted-foreground mb-2">
+                Collected photos
+              </div>
               <div className="grid grid-cols-2 gap-2">
                 {c.collectedImages.map((src, i) => (
-                  <img key={i} src={src} alt={`collected-${i}`} className="w-full h-24 object-cover rounded" />
+                  <img
+                    key={i}
+                    src={src}
+                    alt={`collected-${i}`}
+                    className="w-full h-24 object-cover rounded"
+                  />
                 ))}
               </div>
             </div>

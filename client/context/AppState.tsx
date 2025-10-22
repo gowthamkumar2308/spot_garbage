@@ -69,7 +69,10 @@ function persist(state: { user: User | null; complaints: Complaint[] }) {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(small));
     } catch (err2) {
       try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify({ user: state.user, complaints: [] }));
+        localStorage.setItem(
+          STORAGE_KEY,
+          JSON.stringify({ user: state.user, complaints: [] }),
+        );
       } catch (err3) {
         console.warn("Failed to persist app state to localStorage", err3);
       }

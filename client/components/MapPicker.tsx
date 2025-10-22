@@ -1,10 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { MapContainer, TileLayer, useMapEvents, Circle, Marker } from "react-leaflet";
+import {
+  MapContainer,
+  TileLayer,
+  useMapEvents,
+  Circle,
+  Marker,
+} from "react-leaflet";
 import L from "leaflet";
 
 const markerIcon = L.icon({
   iconUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
-  iconRetinaUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png",
+  iconRetinaUrl:
+    "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png",
   shadowUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
   iconSize: [25, 41],
   iconAnchor: [12, 41],
@@ -12,7 +19,13 @@ const markerIcon = L.icon({
   shadowSize: [41, 41],
 });
 
-function ClickHandler({ onSelect, interactive }: { onSelect: (lat: number, lng: number) => void; interactive: boolean }) {
+function ClickHandler({
+  onSelect,
+  interactive,
+}: {
+  onSelect: (lat: number, lng: number) => void;
+  interactive: boolean;
+}) {
   useMapEvents({
     click(e) {
       if (!interactive) return;
