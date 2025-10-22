@@ -52,59 +52,24 @@ function loadState(): { user: User | null; complaints: Complaint[] } {
 }
 
 function persist(state: { user: User | null; complaints: Complaint[] }) {
-  // Persist complaints but keep small image data URLs if present to allow previews.
-  // Avoid storing huge images that can exceed quota.
-  const keepImage = (img: unknown) =>
-    typeof img === "string" && img.length < 200_000 ? img : undefined;
+  // Persist full state including images. For this demo app we keep images in localStorage
+  // so reports remain visible to other users/admins. Beware of localStorage size limits.
   try {
-    const sanitized = {
-      user: state.user,
-      complaints: state.complaints.map((c) => {
-        const image = keepImage(c.image);
-        const collectedImages = Array.isArray(c.collectedImages)
-          ? c.collectedImages.map(keepImage).filter(Boolean) as string[]
-          : undefined;
-        const { image: _img, collectedImages: _col, ...rest } = {
-          ...c,
-          image,
-          collectedImages,
-        };
-        return {
-          ...rest,
-          ...(image ? { image } : {}),
-          ...(collectedImages ? { collectedImages } : {}),
-        };
-      }),
-    };
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(sanitized));
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
   } catch (err) {
     try {
+      // Fallback: store without images but keep metadata
       const small = {
         user: state.user,
-        complaints: state.complaints.slice(0, 20).map((c) => {
-          const image = keepImage(c.image);
-          const collectedImages = Array.isArray(c.collectedImages)
-            ? c.collectedImages.map(keepImage).filter(Boolean) as string[]
-            : undefined;
-          const { image: _img, collectedImages: _col, ...rest } = {
-          ...c,
-          image,
-          collectedImages,
-        };
-        return {
-          ...rest,
-          ...(image ? { image } : {}),
-          ...(collectedImages ? { collectedImages } : {}),
-        };
+        complaints: state.complaints.map((c) => {
+          const { image: _img, collectedImages: _col, ...rest } = c as any;
+          return rest;
         }),
       };
       localStorage.setItem(STORAGE_KEY, JSON.stringify(small));
     } catch (err2) {
       try {
-        localStorage.setItem(
-          STORAGE_KEY,
-          JSON.stringify({ user: state.user, complaints: [] }),
-        );
+        localStorage.setItem(STORAGE_KEY, JSON.stringify({ user: state.user, complaints: [] }));
       } catch (err3) {
         console.warn("Failed to persist app state to localStorage", err3);
       }
