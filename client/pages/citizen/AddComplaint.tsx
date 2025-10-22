@@ -312,6 +312,8 @@ export default function AddComplaint() {
             disabled={
               loading ||
               !title.trim() ||
+              !description.trim() ||
+              !wasteType ||
               !image ||
               !isFinite(parseCoord(latStr, loc?.lat)) ||
               !isFinite(parseCoord(lngStr, loc?.lng))
