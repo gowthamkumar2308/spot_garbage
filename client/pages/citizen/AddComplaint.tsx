@@ -188,9 +188,9 @@ export default function AddComplaint() {
             placeholder="Add details that help admins locate and assess the site"
           />
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="grid gap-4">
           <div className="grid gap-2">
-            <Label>Waste type</Label>
+            <Label>Waste type <span className="text-destructive-foreground">*</span></Label>
             <Select
               value={wasteType}
               onValueChange={(v) => setWasteType(v as WasteType)}
@@ -207,7 +207,11 @@ export default function AddComplaint() {
                 <SelectItem value="mixed">Mixed</SelectItem>
               </SelectContent>
             </Select>
+            {submitted && !wasteType && (
+              <div className="text-sm text-destructive mt-1">Waste type is required</div>
+            )}
           </div>
+
           <div className="grid gap-2">
             <Label>Toxicity</Label>
             <Select
@@ -224,16 +228,15 @@ export default function AddComplaint() {
               </SelectContent>
             </Select>
           </div>
+
           <div className="grid gap-2">
-            <Label>Location</Label>
+            <Label>Location <span className="text-destructive-foreground">*</span></Label>
             <div className="flex gap-2 flex-col md:flex-row">
               <div className="flex gap-2">
                 <Button type="button" variant="secondary" onClick={getLocation}>
                   Use my location
                 </Button>
-                <span className="text-sm text-muted-foreground self-center">
-                  or enter manually
-                </span>
+                <span className="text-sm text-muted-foreground self-center">or enter manually</span>
               </div>
               <div className="grid grid-cols-2 gap-2 w-full md:w-auto">
                 <Input
@@ -257,7 +260,7 @@ export default function AddComplaint() {
                   }}
                 />
               </div>
-              <div className="mt-2">
+              <div className="mt-2 w-full">
                 <div className="text-sm mb-2">Pick location on map</div>
                 <MapPicker
                   lat={loc?.lat ?? 18.060534}
@@ -266,13 +269,9 @@ export default function AddComplaint() {
                 />
               </div>
             </div>
-            {submitted &&
-              (!isFinite(parseCoord(latStr, loc?.lat)) ||
-                !isFinite(parseCoord(lngStr, loc?.lng))) && (
-                <div className="text-sm text-destructive mt-1">
-                  Valid latitude and longitude are required
-                </div>
-              )}
+            {submitted && (!isFinite(parseCoord(latStr, loc?.lat)) || !isFinite(parseCoord(lngStr, loc?.lng))) && (
+              <div className="text-sm text-destructive mt-1">Valid latitude and longitude are required</div>
+            )}
           </div>
         </div>
         <div className="grid gap-2">
