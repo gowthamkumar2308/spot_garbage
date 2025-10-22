@@ -259,6 +259,7 @@ export default function AddComplaint() {
               </div>
               <div className="mt-2">
                 <div className="text-sm mb-2">Pick location on map</div>
+                <div className="text-xs text-muted-foreground mb-2">Tip: click the map to place the pin or drag the marker. You can also type coordinates above and blur the field to update the map, or press "Use my location" to auto-fill.</div>
                 <MapPicker
                   lat={loc?.lat ?? 18.060534}
                   lng={loc?.lng ?? 83.405583}
