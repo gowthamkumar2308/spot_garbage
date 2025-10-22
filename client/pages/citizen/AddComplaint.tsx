@@ -53,7 +53,7 @@ export default function AddComplaint() {
     return isFinite(n) ? n : NaN;
   };
 
-  const getLocation = (opts?: PositionOptions) => {
+  const getLocation = async (opts?: PositionOptions) => {
     // Default map location (Chintalavalasa)
     const fallbackLat = 18.060534;
     const fallbackLng = 83.405583;
@@ -67,25 +67,37 @@ export default function AddComplaint() {
       return;
     }
 
-    navigator.geolocation.getCurrentPosition(
-      (pos) => {
-        const coords = { lat: pos.coords.latitude, lng: pos.coords.longitude };
-        setLoc(coords);
-        setLatStr(String(coords.lat));
-        setLngStr(String(coords.lng));
-      },
-      (err) => {
-        // On permission denied or other errors, default to provided coordinates
-        toast.info(
-          "Using default location — grant location permission for live coordinates",
-        );
-        const coords = { lat: fallbackLat, lng: fallbackLng };
-        setLoc(coords);
-        setLatStr(String(coords.lat));
-        setLngStr(String(coords.lng));
-      },
-      opts ?? { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 },
-    );
+    try {
+      const pos = await getCurrentPositionAsync(opts ?? { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 });
+      const coords = { lat: pos.coords.latitude, lng: pos.coords.longitude };
+      setLoc(coords);
+      setLatStr(String(coords.lat));
+      setLngStr(String(coords.lng));
+      toast.success("Location obtained");
+    } catch (err: any) {
+      // On permission denied or other errors, default to provided coordinates
+      if (err && typeof err.code === "number") {
+        switch (err.code) {
+          case 1:
+            toast.error("Location permission denied — allow location or enter coordinates manually.");
+            break;
+          case 2:
+            toast.error("Unable to determine your location. Enter coordinates manually or try again.");
+            break;
+          case 3:
+            toast.error("Location request timed out. Try again or enter coordinates manually.");
+            break;
+          default:
+            toast.error("Could not get location �� enter coordinates manually.");
+        }
+      } else {
+        toast.error("Could not get location — enter coordinates manually.");
+      }
+      const coords = { lat: fallbackLat, lng: fallbackLng };
+      setLoc(coords);
+      setLatStr(String(coords.lat));
+      setLngStr(String(coords.lng));
+    }
   };
 
   const getCurrentPositionAsync = (opts?: PositionOptions) =>
