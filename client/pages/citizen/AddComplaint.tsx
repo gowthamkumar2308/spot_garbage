@@ -88,7 +88,7 @@ export default function AddComplaint() {
             toast.error("Location request timed out. Try again or enter coordinates manually.");
             break;
           default:
-            toast.error("Could not get location �� enter coordinates manually.");
+            toast.error("Could not get location — enter coordinates manually.");
         }
       } else {
         toast.error("Could not get location — enter coordinates manually.");
@@ -110,6 +110,18 @@ export default function AddComplaint() {
   useEffect(() => {
     getLocation();
   }, []);
+
+  // When user types coordinates manually, debounce and update loc so map recenters
+  useEffect(() => {
+    const t = setTimeout(() => {
+      const lat = parseCoord(latStr, loc?.lat);
+      const lng = parseCoord(lngStr, loc?.lng);
+      if (isFinite(lat) && isFinite(lng)) {
+        setLoc({ lat, lng });
+      }
+    }, 400);
+    return () => clearTimeout(t);
+  }, [latStr, lngStr]);
 
   const submit = async () => {
     setSubmitted(true);
