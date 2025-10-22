@@ -150,7 +150,8 @@ export default function ReportView() {
             <div className="text-sm text-muted-foreground mb-2">
               {isFallback ? fallbackAddress : ""}
             </div>
-            <MapEmbed lat={c.lat} lng={c.lng} />
+            <div className="text-xs text-muted-foreground mb-2">Map: pin shows the saved location. This view is read-only.</div>
+            <MapPicker lat={c.lat} lng={c.lng} onSelect={() => {}} interactive={false} />
             <div className="mt-3 flex gap-2">
               <a
                 className="text-sm underline"
